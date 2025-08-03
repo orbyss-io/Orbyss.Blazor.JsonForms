@@ -9,8 +9,8 @@ namespace Orbyss.Components.JsonForms.Context
     public sealed class JsonFormDataContext(
         IJsonTransformer jsonTransformer,
         IFormElementContextFactory elementContextFactory,
-        IJsonPathInterpreter jsonPathInterpreter) 
-        
+        IJsonPathInterpreter jsonPathInterpreter)
+
         : IJsonFormDataContext
     {
         private JToken? data;

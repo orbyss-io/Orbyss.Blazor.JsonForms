@@ -12,7 +12,7 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
         }
     }
 
-    public class InputFormComponentInstance<TComponent>(Func<JToken?, object?> convertValue) 
+    public class InputFormComponentInstance<TComponent>(Func<JToken?, object?> convertValue)
 
         : InputFormComponentInstance(typeof(TComponent), convertValue)
 

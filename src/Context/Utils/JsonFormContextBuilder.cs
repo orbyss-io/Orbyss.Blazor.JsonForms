@@ -25,10 +25,10 @@ namespace Orbyss.Components.JsonForms.Context.Utils
             jsonPathInterpreter ??= JsonPathInterpreter.Default;
 
             var result = new JsonFormContext(
-                notificationHandler ?? new JsonFormNotificationHandler(), 
-                uiSchemaInterpreter ?? UiSchemaInterpreterBuilder.Build(jsonPathInterpreter, controlTypeInterpreter), 
-                elementContextFactory ?? new FormElementContextFactory(jsonPathInterpreter), 
-                dataContext ?? JsonFormDataContextBuilder.Build(jsonTransformer, jsonPathInterpreter, elementContextFactory), 
+                notificationHandler ?? new JsonFormNotificationHandler(),
+                uiSchemaInterpreter ?? UiSchemaInterpreterBuilder.Build(jsonPathInterpreter, controlTypeInterpreter),
+                elementContextFactory ?? new FormElementContextFactory(jsonPathInterpreter),
+                dataContext ?? JsonFormDataContextBuilder.Build(jsonTransformer, jsonPathInterpreter, elementContextFactory),
                 translationContext ?? new JsonFormTranslationContext(jsonPathInterpreter),
                 ruleEnforcer ?? new FormRuleEnforcer()
             );

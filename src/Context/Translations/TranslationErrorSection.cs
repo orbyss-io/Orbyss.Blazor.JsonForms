@@ -131,7 +131,7 @@ namespace Orbyss.Components.JsonForms.Context.Translations
 
         public static TranslationErrorSection DefaultSection()
         {
-            return new (
+            return new(
                null, null, null, null, null, null, null, null, null, null, null
            );
         }

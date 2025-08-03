@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Orbyss.Components.JsonForms.ComponentInstances
 {
     public abstract class InputFormComponentInstanceBase : FormComponentInstanceBase
     {
-        JToken? value;
+        private JToken? value;
 
-        public string? Label { get; internal set; }        
+        public string? Label { get; internal set; }
 
         public bool Disabled { get; internal set; }
 
@@ -37,9 +36,9 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
             AddIfNotContains(result, nameof(HelperText), HelperText);
 
             result[nameof(Label)] = Label;
-            result[nameof(Disabled)]= Disabled;
+            result[nameof(Disabled)] = Disabled;
             result[nameof(ReadOnly)] = ReadOnly;
-            result[nameof(ErrorHelperText)] =ErrorHelperText;
+            result[nameof(ErrorHelperText)] = ErrorHelperText;
             result[nameof(Value)] = Value;
 
             return result;

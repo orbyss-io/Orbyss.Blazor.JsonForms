@@ -34,7 +34,7 @@ namespace Orbyss.Components.JsonForms.Constants
 
         public static Type GetForControlType(ControlType controlType)
         {
-            if(!fieldsPerControlType.TryGetValue(controlType, out var result))
+            if (!fieldsPerControlType.TryGetValue(controlType, out var result))
             {
                 throw new NotSupportedException($"Cannot lookup System.Type for control type '{controlType}'");
             }

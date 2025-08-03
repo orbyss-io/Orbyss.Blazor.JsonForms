@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Orbyss.Components.JsonForms.Context;
-using Orbyss.Components.JsonForms.Context.Models;
 using Orbyss.Components.JsonForms.Context.Utils;
 using Orbyss.Components.JsonForms.Interpretation;
 using Orbyss.Components.JsonForms.UiSchema;
@@ -12,7 +11,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
     public sealed class FormRuleEnforcerTests
     {
         private const string jsonSchema = "{\"properties\":{\"address\":{\"type\":\"object\",\"properties\":{\"street\":{\"type\":\"string\"},\"streetNumber\":{\"type\":\"string\"}}}}}";
-        static readonly FormElementContextFactory contextFactory = new(new JsonPathInterpreter());
+        private static readonly FormElementContextFactory contextFactory = new(new JsonPathInterpreter());
 
         [Test]
         [TestCase(UiSchemaElementRuleEffect.Hide, true)]
@@ -125,7 +124,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_EnforceRulesForPages_And_RuleMustBeEnforced_Then_Applies_Effect_To_PageUnderEvaluation()
         {
-            // Arrange            
+            // Arrange
             var formData = new JObject
             {
                 ["address"] = new JObject
@@ -175,7 +174,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
             Assert.That(pageContext.Hidden, Is.True);
         }
 
-        static UiSchemaControlInterpretation CreateControlInterpretation(string absoluteSchemaPath, string relativeSchemaPath, string? parentSchemaPath, UiSchemaRuleInterpretation? rule, bool initialHiddenValue = false, bool initialDisabledValue = false)
+        private static UiSchemaControlInterpretation CreateControlInterpretation(string absoluteSchemaPath, string relativeSchemaPath, string? parentSchemaPath, UiSchemaRuleInterpretation? rule, bool initialHiddenValue = false, bool initialDisabledValue = false)
         {
             return new(
                 ControlType.String,

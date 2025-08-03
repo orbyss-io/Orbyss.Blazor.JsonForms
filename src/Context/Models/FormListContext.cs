@@ -5,7 +5,7 @@ using Orbyss.Components.JsonForms.Interpretation;
 
 namespace Orbyss.Components.JsonForms.Context.Models
 {
-    public sealed class FormListContext(UiSchemaListInterpretation interpretation, string absoluteDataJsonPath, string? absoluteParentDataJsonPath) 
+    public sealed class FormListContext(UiSchemaListInterpretation interpretation, string absoluteDataJsonPath, string? absoluteParentDataJsonPath)
         : FormControlContextBase<UiSchemaListInterpretation>(interpretation, absoluteDataJsonPath, absoluteParentDataJsonPath)
     {
         private readonly IList<IFormElementContext> items = [];

@@ -4,10 +4,9 @@ using Orbyss.Components.JsonForms.Interpretation;
 
 namespace Orbyss.Components.JsonForms.Context.Models
 {
-
-    public abstract class FormControlContextBase<TInterpretation>(TInterpretation interpretation, string absoluteDataJsonPath, string? absoluteParentDataJsonPath) 
+    public abstract class FormControlContextBase<TInterpretation>(TInterpretation interpretation, string absoluteDataJsonPath, string? absoluteParentDataJsonPath)
         : FormElementContextBase<TInterpretation>(interpretation)
-        where TInterpretation: UiSchemaControlInterpretationBase
+        where TInterpretation : UiSchemaControlInterpretationBase
     {
         public string AbsoluteDataJsonPath => absoluteDataJsonPath;
 

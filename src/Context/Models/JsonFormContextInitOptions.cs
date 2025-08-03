@@ -8,7 +8,7 @@ namespace Orbyss.Components.JsonForms.Context.Models
 {
     public sealed class JsonFormContextInitOptions
     {
-        public JsonFormContextInitOptions(JSchema dataSchema,FormUiSchema uiSchema,TranslationSchema translationSchema)
+        public JsonFormContextInitOptions(JSchema dataSchema, FormUiSchema uiSchema, TranslationSchema translationSchema)
         {
             DataSchema = dataSchema;
             UiSchema = uiSchema;

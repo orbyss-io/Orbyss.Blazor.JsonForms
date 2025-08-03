@@ -44,7 +44,7 @@ namespace Orbyss.Components.JsonForms.Context
             return result;
         }
 
-        FormControlContext CreateControl(UiSchemaControlInterpretation controlInterpretation, string? parentElementAbsoluteDataPath)
+        private FormControlContext CreateControl(UiSchemaControlInterpretation controlInterpretation, string? parentElementAbsoluteDataPath)
         {
             if (!string.IsNullOrWhiteSpace(parentElementAbsoluteDataPath))
             {
@@ -69,8 +69,7 @@ namespace Orbyss.Components.JsonForms.Context
             );
         }
 
-
-        FormListContext CreateList(UiSchemaListInterpretation listInterpretation, string? parentAbsoluteDataPath)
+        private FormListContext CreateList(UiSchemaListInterpretation listInterpretation, string? parentAbsoluteDataPath)
         {
             if (!string.IsNullOrWhiteSpace(parentAbsoluteDataPath))
             {
@@ -94,7 +93,7 @@ namespace Orbyss.Components.JsonForms.Context
             );
         }
 
-        FormVerticalLayoutContext CreateVerticalLayout(UiSchemaVerticalLayoutInterpretation interpretation, string? parentAbsoluteDataPath)
+        private FormVerticalLayoutContext CreateVerticalLayout(UiSchemaVerticalLayoutInterpretation interpretation, string? parentAbsoluteDataPath)
         {
             var rows = interpretation.Rows.Select(row =>
             {
@@ -105,7 +104,7 @@ namespace Orbyss.Components.JsonForms.Context
             return new FormVerticalLayoutContext(interpretation, rows);
         }
 
-        FormHorizontalLayoutContext CreateHorizontalLayout(UiSchemaHorizontalLayoutInterpretation interpretation, string? parentAbsoluteDataPath)
+        private FormHorizontalLayoutContext CreateHorizontalLayout(UiSchemaHorizontalLayoutInterpretation interpretation, string? parentAbsoluteDataPath)
         {
             var columns = interpretation.Columns.Select(column =>
             {

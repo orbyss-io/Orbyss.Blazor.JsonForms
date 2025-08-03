@@ -15,7 +15,7 @@ namespace Orbyss.Components.JsonForms.Interpretation
         FormUiSchemaElement element,
         UiSchemaRuleInterpretation? rule)
 
-        : UiSchemaControlInterpretationBase(labelInterpretation, readOnly, disabled, hidden, relativeSchemaJsonPath, absoluteSchemaJsonPath, controlJsonPropertyName, absoluteParentObjectSchemaPath, element, rule)            
+        : UiSchemaControlInterpretationBase(labelInterpretation, readOnly, disabled, hidden, relativeSchemaJsonPath, absoluteSchemaJsonPath, controlJsonPropertyName, absoluteParentObjectSchemaPath, element, rule)
     {
         public override UiSchemaElementInterpretationType ElementType => UiSchemaElementInterpretationType.Control;
 

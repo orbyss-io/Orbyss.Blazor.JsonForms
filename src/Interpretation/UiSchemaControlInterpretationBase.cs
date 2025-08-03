@@ -2,7 +2,7 @@
 using Orbyss.Components.JsonForms.UiSchema;
 
 namespace Orbyss.Components.JsonForms.Interpretation
-{    
+{
     public abstract class UiSchemaControlInterpretationBase(
         UiSchemaLabelInterpretation? labelInterpretation,
         bool readOnly,

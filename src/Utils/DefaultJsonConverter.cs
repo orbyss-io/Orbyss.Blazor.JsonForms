@@ -8,7 +8,7 @@ namespace Orbyss.Components.JsonForms.Utils
         public static TValue Deserialize<TValue>(string json)
         {
             var settings = new JsonSerializerSettings();
-            settings.Converters.Add(new StringEnumConverter());            
+            settings.Converters.Add(new StringEnumConverter());
             return JsonConvert.DeserializeObject<TValue>(json, settings)!;
         }
     }

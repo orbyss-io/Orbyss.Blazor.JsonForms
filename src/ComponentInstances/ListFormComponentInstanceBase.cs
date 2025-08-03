@@ -1,10 +1,9 @@
-﻿
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace Orbyss.Components.JsonForms.ComponentInstances
 {
     public abstract class ListFormComponentInstanceBase : FormComponentInstanceBase
-    {   
+    {
         public bool ReadOnly { get; internal set; }
 
         public bool Disabled { get; internal set; }

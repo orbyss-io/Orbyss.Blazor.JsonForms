@@ -9,19 +9,19 @@ namespace Orbyss.Components.JsonForms.Tests.Context
     [TestFixture]
     public sealed class JsonFormDataContextTests
     {
-        const string schemaJson = "{\"properties\":{\"firstName\":{\"type\":\"string\", \"minLength\": 50}}, \"required\":[\"firstName\"]}";
-        static readonly JSchema schema = JSchema.Parse(schemaJson);
+        private const string schemaJson = "{\"properties\":{\"firstName\":{\"type\":\"string\", \"minLength\": 50}}, \"required\":[\"firstName\"]}";
+        private static readonly JSchema schema = JSchema.Parse(schemaJson);
 
         [Test]
         public void When_GetValue_Then_Returns_Value_For_ControlContext()
         {
-            // Arrange            
+            // Arrange
             var formData = new JObject
             {
                 ["firstName"] = "Johannes"
             };
             var sut = JsonFormDataContextBuilder.BuildAndInstantiate(
-                schema, 
+                schema,
                 formData
             );
             var formControl = GetFormContext();
@@ -36,7 +36,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_SetValue_Then_Returns_Value_For_ControlContext()
         {
-            // Arrange            
+            // Arrange
             var formData = new JObject
             {
                 ["firstName"] = "Johannes"
@@ -58,7 +58,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_Validate_Then_SetsErrorMessagesWhenInvalid()
         {
-            // Arrange            
+            // Arrange
             var formData = new JObject
             {
                 ["firstName"] = "Johannes"
@@ -83,7 +83,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_Validate_And_Is_Required_SetsErrorMessagesWhenInvalid()
         {
-            // Arrange            
+            // Arrange
             var formData = new JObject();
             var sut = JsonFormDataContextBuilder.BuildAndInstantiate(
                 schema,
@@ -102,7 +102,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
             Assert.That(errors[0], Is.EqualTo(ErrorType.Required));
         }
 
-        static FormControlContext GetFormContext()
+        private static FormControlContext GetFormContext()
         {
             var formControlInterpretation = new UiSchemaControlInterpretation(
                 ControlType.String,

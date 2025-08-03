@@ -76,7 +76,7 @@ namespace Orbyss.Components.JsonForms.Tests.Interpretation
               UiSchemaElementType.HorizontalLayout,
               null,
               null,
-              [                  
+              [
               ],
               null
             );
@@ -170,7 +170,7 @@ namespace Orbyss.Components.JsonForms.Tests.Interpretation
             Assert.That(firstRowControlElement.ReadOnly, Is.True);
         }
 
-        static FormUiSchemaInterpreter GetSut()
+        private static FormUiSchemaInterpreter GetSut()
         {
             return new FormUiSchemaInterpreter(
                 new JsonPathInterpreter(),

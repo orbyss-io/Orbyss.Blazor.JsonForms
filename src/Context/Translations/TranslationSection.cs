@@ -1,8 +1,8 @@
 ﻿using Orbyss.Components.Json.Models;
 
 namespace Orbyss.Components.JsonForms.Context.Translations
-{    
-    public sealed record TranslationSection(        
+{
+    public sealed record TranslationSection(
         string? Label,
         TranslationErrorSection? Error,
         IEnumerable<TranslatedEnumItem>? Enums,

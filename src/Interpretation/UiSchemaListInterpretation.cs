@@ -17,7 +17,7 @@ namespace Orbyss.Components.JsonForms.Interpretation
         FormUiSchemaElement element,
         UiSchemaRuleInterpretation? rule)
 
-        : UiSchemaControlInterpretationBase(labelInterpretation, readOnly, disabled, hidden, relativeSchemaJsonPath, absoluteSchemaJsonPath, listJsonPropertyName, absoluteParentObjectSchemaPath, element, rule)            
+        : UiSchemaControlInterpretationBase(labelInterpretation, readOnly, disabled, hidden, relativeSchemaJsonPath, absoluteSchemaJsonPath, listJsonPropertyName, absoluteParentObjectSchemaPath, element, rule)
     {
         private IUiSchemaElementInterpretation? listDetails;
 

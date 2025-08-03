@@ -9,6 +9,6 @@ namespace Orbyss.Components.JsonForms.Context.Interfaces
 
     public interface IJsonFormNotification
     {
-        IDisposable Subscribe(JsonFormNotificationType type, Action callback);        
+        IDisposable Subscribe(JsonFormNotificationType type, Action callback);
     }
 }

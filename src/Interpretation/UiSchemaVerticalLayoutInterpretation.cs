@@ -2,7 +2,7 @@
 
 namespace Orbyss.Components.JsonForms.Interpretation
 {
-    public sealed class UiSchemaVerticalLayoutInterpretation(UiSchemaLabelInterpretation? labelInterpretation) 
+    public sealed class UiSchemaVerticalLayoutInterpretation(UiSchemaLabelInterpretation? labelInterpretation)
         : UiSchemaElementInterpretationBase(labelInterpretation)
     {
         public override UiSchemaElementInterpretationType ElementType => UiSchemaElementInterpretationType.VerticalLayout;

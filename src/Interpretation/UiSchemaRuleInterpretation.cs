@@ -3,7 +3,7 @@ using Orbyss.Components.JsonForms.UiSchema;
 
 namespace Orbyss.Components.JsonForms.Interpretation
 {
-    public sealed class UiSchemaRuleInterpretation(string absoluteJsonSchemaPath, JSchema schema, UiSchemaElementRuleEffect effect)       
+    public sealed class UiSchemaRuleInterpretation(string absoluteJsonSchemaPath, JSchema schema, UiSchemaElementRuleEffect effect)
     {
         public string AbsoluteJsonSchemaPath { get; } = absoluteJsonSchemaPath;
 

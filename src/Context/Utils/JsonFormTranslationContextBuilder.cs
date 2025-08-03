@@ -27,7 +27,7 @@ namespace Orbyss.Components.JsonForms.Context.Utils
         public static IJsonFormTranslationContext BuildAndInstantiate(string translationSchemaJson, string jsonSchema, IJsonPathInterpreter jsonPathInterpreter)
         {
             return BuildAndInstantiate(
-                DefaultJsonConverter.Deserialize<TranslationSchema>(translationSchemaJson), 
+                DefaultJsonConverter.Deserialize<TranslationSchema>(translationSchemaJson),
                 JSchema.Parse(jsonSchema),
                 jsonPathInterpreter
             );

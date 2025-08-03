@@ -26,7 +26,7 @@ namespace Orbyss.Components.JsonForms.Context.Notifications
         }
 
         private sealed record SubscriptionToken(Guid Id, Action<Guid> Unsubscribe) : IDisposable
-        {            
+        {
             private bool _disposed;
 
             public void Dispose()
@@ -34,7 +34,7 @@ namespace Orbyss.Components.JsonForms.Context.Notifications
                 if (!_disposed)
                 {
                     Unsubscribe(Id);
-                    _disposed = true;                    
+                    _disposed = true;
                 }
             }
         }

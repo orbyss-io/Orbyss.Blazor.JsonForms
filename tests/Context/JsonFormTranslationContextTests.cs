@@ -13,6 +13,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
     {
         private const string jsonSchema = "{\"properties\":{\"address\":{\"type\":\"object\",\"properties\":{\"street\":{\"type\":\"string\"}}},\"addressType\":{\"type\":\"string\",\"enum\":[\"H\",\"B\",\"S\"]},\"nonTranslatedEnum\":{\"type\":\"string\",\"enum\":[\"First\",\"Second\",\"Third\"]}}}";
         private static readonly JSchema schema = JSchema.Parse(jsonSchema);
+
         private static readonly TranslationSchema translationSchema = new(
             new TranslationResourcesDictionary
             {
@@ -55,7 +56,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_Instantiate_Then_SetsTranslationObjects()
         {
-            // Act            
+            // Act
             var sut = JsonFormTranslationContextBuilder.BuildAndInstantiate(
                 translationSchema,
                 schema
@@ -97,7 +98,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
                 schema
             );
 
-            // Act            
+            // Act
             var result = sut.TranslateLabel("en", controlInterpretation);
 
             // Assert
@@ -126,7 +127,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
                 schema
             );
 
-            // Act            
+            // Act
             var result = sut.TranslateLabel("nl", controlInterpretation);
 
             // Assert
@@ -155,7 +156,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
                 schema
             );
 
-            // Act            
+            // Act
             var result = sut.TranslateLabel(null, controlInterpretation);
 
             // Assert
@@ -184,7 +185,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
                 schema
             );
 
-            // Act            
+            // Act
             var result = sut.TranslateLabel(null, controlInterpretation);
 
             // Assert
@@ -194,7 +195,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_TranslateEnum_ForControl_Then_ReturnsTranslatedEnums()
         {
-            // Arrange            
+            // Arrange
             var controlInterpretation = new UiSchemaControlInterpretation(
                 ControlType.String,
                 new(null, null),
@@ -213,7 +214,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
                 schema
             );
 
-            // Act            
+            // Act
             var result = sut
                 .TranslateEnum("en", controlInterpretation)?
                 .ToArray();
@@ -232,7 +233,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_TranslateEnum_ForControl_And_NoTranslationsConfigured_Then_ReturnsDefaultEnumTranslations()
         {
-            // Arrange            
+            // Arrange
             var controlInterpretation = new UiSchemaControlInterpretation(
                 ControlType.String,
                 new(null, null),
@@ -251,7 +252,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
                 schema
             );
 
-            // Act            
+            // Act
             var result = sut
                 .TranslateEnum("en", controlInterpretation)?
                 .ToArray();
@@ -270,7 +271,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_TranslateErrors_ForControl_Then_ReturnsErrorTranslation()
         {
-            // Arrange            
+            // Arrange
             var controlInterpretation = new UiSchemaControlInterpretation(
                 ControlType.String,
                 new(null, null),
@@ -294,7 +295,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
                 ErrorType.MinimumLength
             };
 
-            // Act            
+            // Act
             var result = sut.TranslateErrors("en", errorTypes, controlInterpretation);
 
             // Assert
@@ -305,7 +306,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_TranslateErrors_ForControl_And_NoErrorTranslationsConfigured_Then_ReturnsDefaultErrorTranslation()
         {
-            // Arrange            
+            // Arrange
             var controlInterpretation = new UiSchemaControlInterpretation(
                 ControlType.String,
                 new(null, null),
@@ -329,7 +330,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
                 ErrorType.MinimumLength
             };
 
-            // Act            
+            // Act
             var result = sut.TranslateErrors("en", errorTypes, controlInterpretation);
 
             // Assert
@@ -340,7 +341,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_TranslateLabel_ForLabelInterpretation_Then_ReturnsTransactionSectionLabel()
         {
-            // Arrange            
+            // Arrange
             var sut = JsonFormTranslationContextBuilder.BuildAndInstantiate(
                 translationSchema,
                 schema
@@ -350,7 +351,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
                 null
             );
 
-            // Act            
+            // Act
             var result = sut.TranslateLabel("en", labelInterpretation);
 
             // Assert
@@ -360,7 +361,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_TranslateLabel_ForLabelInterpretation_Includingi18N_Then_ReturnsTransactionSectionLabel()
         {
-            // Arrange            
+            // Arrange
             var sut = JsonFormTranslationContextBuilder.BuildAndInstantiate(
                 translationSchema,
                 schema
@@ -370,11 +371,11 @@ namespace Orbyss.Components.JsonForms.Tests.Context
                 "customI18nSection"
             );
 
-            // Act            
+            // Act
             var result = sut.TranslateLabel("en", labelInterpretation);
 
             // Assert
             Assert.That(result, Is.EqualTo("Some custom i18n translation"));
-        }       
+        }
     }
 }

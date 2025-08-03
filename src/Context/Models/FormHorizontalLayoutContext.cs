@@ -4,7 +4,7 @@ using Orbyss.Components.JsonForms.Interpretation;
 
 namespace Orbyss.Components.JsonForms.Context.Models
 {
-    public sealed class FormHorizontalLayoutContext(UiSchemaHorizontalLayoutInterpretation interpretation, IEnumerable<IFormElementContext> columns) 
+    public sealed class FormHorizontalLayoutContext(UiSchemaHorizontalLayoutInterpretation interpretation, IEnumerable<IFormElementContext> columns)
         : FormElementContextBase<UiSchemaHorizontalLayoutInterpretation>(interpretation)
     {
         public IEnumerable<IFormElementContext> Columns { get; } = columns;

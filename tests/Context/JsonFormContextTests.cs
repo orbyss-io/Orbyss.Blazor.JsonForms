@@ -52,7 +52,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_ChangeDisabled_Then_PublishesEvent()
         {
-            // Arrange            
+            // Arrange
             int assertionValue = 0;
             var initOptions = new JsonFormContextInitOptions(
                 jsonSchema,
@@ -75,7 +75,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_ChangeLanguage_Then_PublishesEvent()
         {
-            // Arrange            
+            // Arrange
             int assertionValue = 0;
             var initOptions = new JsonFormContextInitOptions(
                 jsonSchema,
@@ -98,7 +98,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_ChangeReadOnly_Then_PublishesEvent()
         {
-            // Arrange            
+            // Arrange
             int assertionValue = 0;
             var initOptions = new JsonFormContextInitOptions(
                 jsonSchema,
@@ -121,7 +121,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_Validate_Then_PublishesEvent()
         {
-            // Arrange            
+            // Arrange
             int assertionValue = 0;
             var initOptions = new JsonFormContextInitOptions(
                 jsonSchema,
@@ -159,7 +159,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
             var verticalLayout = (FormVerticalLayoutContext)page.ElementContexts[0];
             var firstNameContext = verticalLayout.Rows.First(x => x.Interpretation.Label?.Label == "firstName");
 
-            // Act            
+            // Act
             var result = sut.GetValue(firstNameContext.Id);
 
             // Assert
@@ -169,7 +169,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_GetValue_And_ContextIsNotFound_Then_ThrowsException()
         {
-            // Arrange            
+            // Arrange
             var invalidId = Guid.NewGuid();
             var initOptions = new JsonFormContextInitOptions(jsonSchema, uiSchema, translationSchema);
             var sut = JsonFormContextBuilder.BuildAndInstantiate(initOptions);
@@ -185,7 +185,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
         [Test]
         public void When_GetValue_And_ContextIsNotControl_Then_ThrowsException()
         {
-            // Arrange            
+            // Arrange
             var initOptions = new JsonFormContextInitOptions(jsonSchema, uiSchema, translationSchema);
             var sut = JsonFormContextBuilder.BuildAndInstantiate(initOptions);
 
@@ -199,8 +199,6 @@ namespace Orbyss.Components.JsonForms.Tests.Context
             });
             Assert.That(e.Message, Is.EqualTo($"Context of type '{verticalLayout.GetType()}' could not be cast to type '{typeof(FormControlContext)}'"));
         }
-
-
 
         [Test]
         public void When_UpdateValue_Then_UpdatesContextToken_And_EnforcesRules()
@@ -224,7 +222,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
             // Pre-Assert
             Assert.That(surnameElement.Hidden, Is.True);
 
-            // Act            
+            // Act
             sut.UpdateValue(firstNameContext.Id, JValue.CreateString("Johannes"));
 
             // Assert

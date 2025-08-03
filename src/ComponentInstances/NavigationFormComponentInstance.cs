@@ -8,7 +8,7 @@
     public class NavigationFormComponentInstance<TComponent> : NavigationFormComponentInstance
     {
         public NavigationFormComponentInstance() : base(typeof(TComponent))
-        {            
+        {
         }
     }
 }

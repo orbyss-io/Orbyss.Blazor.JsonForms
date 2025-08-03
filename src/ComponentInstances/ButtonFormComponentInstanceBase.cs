@@ -29,7 +29,7 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
         {
             get
             {
-                if(!string.IsNullOrWhiteSpace(text))
+                if (!string.IsNullOrWhiteSpace(text))
                 {
                     return text;
                 }

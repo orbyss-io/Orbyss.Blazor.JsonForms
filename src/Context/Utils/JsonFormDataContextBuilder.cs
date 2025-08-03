@@ -9,8 +9,8 @@ namespace Orbyss.Components.JsonForms.Context.Utils
     public static class JsonFormDataContextBuilder
     {
         public static IJsonFormDataContext Build(
-            IJsonTransformer? jsonTransformer = null ,
-            IJsonPathInterpreter? jsonPathInterpreter = null ,
+            IJsonTransformer? jsonTransformer = null,
+            IJsonPathInterpreter? jsonPathInterpreter = null,
             IFormElementContextFactory? formContextFactory = null)
         {
             jsonPathInterpreter ??= JsonPathInterpreter.Default;
@@ -30,7 +30,6 @@ namespace Orbyss.Components.JsonForms.Context.Utils
             IJsonPathInterpreter? jsonPathInterpreter = null,
             IFormElementContextFactory? formContextFactory = null)
         {
-
             var result = Build(jsonTransformer, jsonPathInterpreter, formContextFactory);
             result.Instantiate(formData ?? new JObject(), jsonSchema);
 

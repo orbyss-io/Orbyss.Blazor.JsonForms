@@ -27,6 +27,7 @@ namespace Orbyss.Components.JsonForms.Context.Interfaces
         JToken? GetValue(Guid dataContextId);
 
         void UpdateValue(Guid dataContextId, JToken? value);
+
         JToken GetFormData();
 
         string? GetDataContextError(Guid dataContextId);
@@ -34,7 +35,6 @@ namespace Orbyss.Components.JsonForms.Context.Interfaces
         string? GetLabel(Guid contextId);
 
         IEnumerable<TranslatedEnumItem> GetTranslatedEnumItems(Guid controlContextId);
-
 
         FormPageContext GetPage(int index);
 

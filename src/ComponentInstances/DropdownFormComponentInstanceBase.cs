@@ -3,7 +3,7 @@ using Orbyss.Components.Json.Models;
 
 namespace Orbyss.Components.JsonForms.ComponentInstances
 {
-    public abstract class DropdownFormComponentInstanceBase: InputFormComponentInstanceBase
+    public abstract class DropdownFormComponentInstanceBase : InputFormComponentInstanceBase
     {
         public bool Clearable { get; set; }
 

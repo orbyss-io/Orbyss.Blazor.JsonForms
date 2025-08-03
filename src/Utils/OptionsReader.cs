@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.Text.Json.Nodes;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Orbyss.Components.JsonForms.Utils
 {
@@ -12,8 +12,7 @@ namespace Orbyss.Components.JsonForms.Utils
         ? result!
             : throw new ArgumentException($"Options do not contain key '{key}'");
 
-        
-        static bool TryGetOption(object? options, string key, out JToken? value)
+        private static bool TryGetOption(object? options, string key, out JToken? value)
         {
             value = null;
 

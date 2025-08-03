@@ -1,5 +1,4 @@
-﻿
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Orbyss.Components.JsonForms.ComponentInstances
 {
@@ -9,7 +8,7 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
 
         protected override sealed object? ConvertValue(JToken? value)
         {
-            if(MultiSelect)
+            if (MultiSelect)
             {
                 return value?.ToObject<IEnumerable<string>>();
             }
@@ -21,7 +20,7 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
     public class DropdownFormComponentInstance<TComponent> : DropdownFormComponentInstance
     {
         public DropdownFormComponentInstance() : base(typeof(TComponent))
-        {            
+        {
         }
     }
 }

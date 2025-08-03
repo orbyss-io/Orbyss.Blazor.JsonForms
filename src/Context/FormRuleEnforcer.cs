@@ -43,7 +43,7 @@ namespace Orbyss.Components.JsonForms.Context
             }
         }
 
-        static void EnforceRule(IJsonFormDataContext dataContext, IFormElementContext contextUnderEvaluation, UiSchemaRuleInterpretation rule, IFormElementContext[] rootContexts)
+        private static void EnforceRule(IJsonFormDataContext dataContext, IFormElementContext contextUnderEvaluation, UiSchemaRuleInterpretation rule, IFormElementContext[] rootContexts)
         {
             for (var i = 0; i < rootContexts.Length; i++)
             {
@@ -65,15 +65,19 @@ namespace Orbyss.Components.JsonForms.Context
                         case UiSchemaElementRuleEffect.Hide:
                             contextUnderEvaluation.SetHidden(true);
                             break;
+
                         case UiSchemaElementRuleEffect.Show:
                             contextUnderEvaluation.SetHidden(false);
                             break;
+
                         case UiSchemaElementRuleEffect.Disable:
                             contextUnderEvaluation.SetDisabled(true);
                             break;
+
                         case UiSchemaElementRuleEffect.Enable:
                             contextUnderEvaluation.SetDisabled(false);
                             break;
+
                         default:
                             break;
                     }
@@ -84,9 +88,9 @@ namespace Orbyss.Components.JsonForms.Context
                     contextUnderEvaluation.SetDisabled(null);
                 }
             }
-        }      
+        }
 
-        static void EnforceRuleForPage(IJsonFormDataContext dataContext, FormPageContext pageContext, IFormElementContext[] rootContexts)
+        private static void EnforceRuleForPage(IJsonFormDataContext dataContext, FormPageContext pageContext, IFormElementContext[] rootContexts)
         {
             if (pageContext.Rule is null)
             {
@@ -113,15 +117,19 @@ namespace Orbyss.Components.JsonForms.Context
                         case UiSchemaElementRuleEffect.Hide:
                             SetHiddenForPage(pageContext, true);
                             break;
+
                         case UiSchemaElementRuleEffect.Show:
                             SetHiddenForPage(pageContext, false);
                             break;
+
                         case UiSchemaElementRuleEffect.Disable:
                             SetDisabledForPage(pageContext, true);
                             break;
+
                         case UiSchemaElementRuleEffect.Enable:
                             SetDisabledForPage(pageContext, false);
                             break;
+
                         default:
                             break;
                     }
@@ -134,7 +142,7 @@ namespace Orbyss.Components.JsonForms.Context
             }
         }
 
-        static void SetDisabledForPage(FormPageContext page, bool? value)
+        private static void SetDisabledForPage(FormPageContext page, bool? value)
         {
             page.SetDisabled(value);
             for (var i = 0; i < page.ElementContexts.Length; i++)
@@ -143,7 +151,7 @@ namespace Orbyss.Components.JsonForms.Context
             }
         }
 
-        static void SetHiddenForPage(FormPageContext page, bool? value)
+        private static void SetHiddenForPage(FormPageContext page, bool? value)
         {
             page.SetHidden(value);
             for (var i = 0; i < page.ElementContexts.Length; i++)
@@ -152,7 +160,7 @@ namespace Orbyss.Components.JsonForms.Context
             }
         }
 
-        static void SetDisabledForElement(IFormElementContext element, bool? value)
+        private static void SetDisabledForElement(IFormElementContext element, bool? value)
         {
             element.SetDisabled(value);
             if (element is FormVerticalLayoutContext verticalLayoutContext)
@@ -183,7 +191,7 @@ namespace Orbyss.Components.JsonForms.Context
             }
         }
 
-        static void SetHiddenForElement(IFormElementContext element, bool? value)
+        private static void SetHiddenForElement(IFormElementContext element, bool? value)
         {
             element.SetDisabled(value);
             if (element is FormVerticalLayoutContext verticalLayoutContext)
@@ -212,6 +220,6 @@ namespace Orbyss.Components.JsonForms.Context
             {
                 controlContext.SetHidden(value);
             }
-        }        
+        }
     }
 }

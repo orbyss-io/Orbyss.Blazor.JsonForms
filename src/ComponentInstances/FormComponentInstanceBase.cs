@@ -1,7 +1,6 @@
 ﻿using Orbyss.Components.JsonForms.ComponentInstances.Interfaces;
 using Orbyss.Components.JsonForms.Utils;
 
-
 namespace Orbyss.Components.JsonForms.ComponentInstances
 {
     public abstract class FormComponentInstanceBase : IFormComponentInstance

@@ -1,10 +1,9 @@
-﻿
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace Orbyss.Components.JsonForms.ComponentInstances
 {
     public abstract class ListItemFormComponentInstanceBase : FormComponentInstanceBase
-    {   
+    {
         public bool Disabled { get; internal set; }
 
         public EventCallback OnRemoveItemClicked { get; internal set; }

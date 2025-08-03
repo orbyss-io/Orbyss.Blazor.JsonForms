@@ -4,13 +4,12 @@ using Orbyss.Components.JsonForms.Interpretation.Interfaces;
 using Orbyss.Components.JsonForms.UiSchema;
 using Orbyss.Components.JsonForms.Utils;
 
-
 namespace Orbyss.Components.JsonForms.Interpretation
 {
     public sealed class FormUiSchemaInterpreter(IJsonPathInterpreter jsonPathInterpreter, IControlTypeInterpreter controlTypeInterpreter) : IFormUiSchemaInterpreter
     {
         public UiSchemaInterpretation Interpret(FormUiSchema uiSchema, JSchema jsonSchema)
-        {            
+        {
             if (uiSchema.Type == UiSchemaElementType.Categorization)
             {
                 return new UiSchemaInterpretation(
@@ -81,11 +80,11 @@ namespace Orbyss.Components.JsonForms.Interpretation
             return result;
         }
 
-        IUiSchemaElementInterpretation Interpret(FormUiSchemaElement element, JSchema jsonSchema, string? parentAbsoluteSchemaJsonPath)
+        private IUiSchemaElementInterpretation Interpret(FormUiSchemaElement element, JSchema jsonSchema, string? parentAbsoluteSchemaJsonPath)
         {
             return element.Type switch
             {
-                UiSchemaElementType.HorizontalLayout => InterpretHorizontalLayout(element,jsonSchema, parentAbsoluteSchemaJsonPath),
+                UiSchemaElementType.HorizontalLayout => InterpretHorizontalLayout(element, jsonSchema, parentAbsoluteSchemaJsonPath),
                 UiSchemaElementType.VerticalLayout => InterpretVerticalLayout(element, jsonSchema, parentAbsoluteSchemaJsonPath),
                 UiSchemaElementType.Group => InterpretVerticalLayout(element, jsonSchema, parentAbsoluteSchemaJsonPath),
                 UiSchemaElementType.Control => InterpretControl(element, jsonSchema, parentAbsoluteSchemaJsonPath),
@@ -212,8 +211,6 @@ namespace Orbyss.Components.JsonForms.Interpretation
             return list;
         }
 
-        
-
         private static bool IsDisabled(FormUiSchemaElement element)
         {
             return IsBooleanOptionValue(element, FormUiSchemaOptionKeys.Disabled);
@@ -229,7 +226,7 @@ namespace Orbyss.Components.JsonForms.Interpretation
             return IsBooleanOptionValue(element, FormUiSchemaOptionKeys.ReadOnly);
         }
 
-        static bool IsBooleanOptionValue(FormUiSchemaElement element, string option)
+        private static bool IsBooleanOptionValue(FormUiSchemaElement element, string option)
         {
             return element.HasOption(option)
                 && bool.Parse($"{element.GetOption(option)}");

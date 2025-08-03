@@ -29,7 +29,6 @@ namespace Orbyss.Components.JsonForms.Context.Translations
                 throw new JsonException("Expected start of object");
             }
 
-
             while (reader.Read())
             {
                 if (reader.TokenType == JsonTokenType.EndObject)
@@ -128,7 +127,7 @@ namespace Orbyss.Components.JsonForms.Context.Translations
             writer.WriteEndObject();
         }
 
-        static string ToCamelCase(string value)
+        private static string ToCamelCase(string value)
         {
             var result = value.ToCharArray();
             result[0] = char.ToLower(result[0]);

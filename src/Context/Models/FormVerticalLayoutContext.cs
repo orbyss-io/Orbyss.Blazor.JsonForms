@@ -4,7 +4,7 @@ using Orbyss.Components.JsonForms.Interpretation;
 
 namespace Orbyss.Components.JsonForms.Context.Models
 {
-    public sealed class FormVerticalLayoutContext(UiSchemaVerticalLayoutInterpretation interpretation, IEnumerable<IFormElementContext> rows) 
+    public sealed class FormVerticalLayoutContext(UiSchemaVerticalLayoutInterpretation interpretation, IEnumerable<IFormElementContext> rows)
         : FormElementContextBase<UiSchemaVerticalLayoutInterpretation>(interpretation)
     {
         public IEnumerable<IFormElementContext> Rows { get; } = rows;

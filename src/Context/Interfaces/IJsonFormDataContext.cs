@@ -22,6 +22,6 @@ namespace Orbyss.Components.JsonForms.Context.Interfaces
 
         void RemoveListItem(FormListContext listContext, IFormElementContext listItemContext);
 
-        void InstantiateList(FormListContext listContext);        
+        void InstantiateList(FormListContext listContext);
     }
 }

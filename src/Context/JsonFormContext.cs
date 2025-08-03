@@ -11,7 +11,7 @@ namespace Orbyss.Components.JsonForms.Context
     public sealed class JsonFormContext(
         IJsonFormNotificationHandler notificationHandler,
         IFormUiSchemaInterpreter uiSchemaInterpreter,
-        IFormElementContextFactory elementContextFactory,        
+        IFormElementContextFactory elementContextFactory,
         IJsonFormDataContext dataContext,
         IJsonFormTranslationContext translationContext,
         IFormRuleEnforcer ruleEnforcer
@@ -206,19 +206,19 @@ namespace Orbyss.Components.JsonForms.Context
             notificationHandler.Notify(JsonFormNotificationType.OnReadOnlyChanged);
         }
 
-        static FormControlContext CastControl(IFormElementContext context)
+        private static FormControlContext CastControl(IFormElementContext context)
         {
             return context as FormControlContext
                 ?? throw new InvalidCastException($"Context of type '{context.GetType()}' could not be cast to type '{typeof(FormControlContext)}'");
         }
 
-        static FormListContext CastList(IFormElementContext context)
+        private static FormListContext CastList(IFormElementContext context)
         {
             return context as FormListContext
                 ?? throw new InvalidCastException($"Context of type '{context.GetType()}' could not be cast to type '{typeof(FormListContext)}'");
         }
 
-        void EnforceRules()
+        private void EnforceRules()
         {
             var rootContexts = GetAllRootElementContexts();
             for (var j = 0; j < rootContexts.Length; j++)
@@ -230,7 +230,7 @@ namespace Orbyss.Components.JsonForms.Context
             ruleEnforcer.EnforceRulesForPages(dataContext, pages, rootContexts);
         }
 
-        IFormElementContext[] GetAllRootElementContexts()
+        private IFormElementContext[] GetAllRootElementContexts()
         {
             var result = new List<IFormElementContext>();
 
@@ -243,7 +243,7 @@ namespace Orbyss.Components.JsonForms.Context
             return [.. result];
         }
 
-        IFormElementContext FindContextById(Guid id)
+        private IFormElementContext FindContextById(Guid id)
         {
             foreach (var page in pages)
             {

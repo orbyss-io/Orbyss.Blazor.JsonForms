@@ -9,7 +9,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context.Translations
         [Test]
         public void When_GetValue_Then_Returns_Value_For_ErrorType()
         {
-            // Arrange            
+            // Arrange
             var sut = new TranslationErrorSection(
                 Custom: null,
                 Const: "Const error message",
@@ -52,7 +52,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context.Translations
         [Test]
         public void When_GetValue_And_CustomMessageSpecified_Then_Returns_CustomMessage()
         {
-            // Arrange            
+            // Arrange
             var sut = new TranslationErrorSection(
                 Custom: "Custom message",
                 Const: null,
@@ -95,7 +95,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context.Translations
         [Test]
         public void When_GetValue_And_CustomMessageSpecified_ButErrorSpecificMessageAlsoSpecified_Then_Returns_ErrorTypeSpecificMessage()
         {
-            // Arrange            
+            // Arrange
             var sut = new TranslationErrorSection(
                 Custom: "Custom message",
                 Const: "Const message",
@@ -120,7 +120,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context.Translations
         [Test]
         public void When_GetValue_And_ErrorSectionIsDefault_ThenReturns_DefaultMessages()
         {
-            // Arrange            
+            // Arrange
             var sut = TranslationErrorSection.DefaultSection();
 
             // Act

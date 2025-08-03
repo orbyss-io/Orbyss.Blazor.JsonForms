@@ -2,7 +2,7 @@
 
 namespace Orbyss.Components.JsonForms.Interpretation
 {
-    public sealed class UiSchemaHorizontalLayoutInterpretation() 
+    public sealed class UiSchemaHorizontalLayoutInterpretation()
         : UiSchemaElementInterpretationBase(null)
     {
         public override UiSchemaElementInterpretationType ElementType => UiSchemaElementInterpretationType.HorizontalLayout;

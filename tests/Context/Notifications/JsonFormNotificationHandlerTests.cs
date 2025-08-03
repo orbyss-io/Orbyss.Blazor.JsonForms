@@ -55,7 +55,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context.Notifications
             Assert.That(assertion, Is.EqualTo(11));
         }
 
-        static void AssertSubscribersLength(JsonFormNotificationHandler sut, int expectedLength)
+        private static void AssertSubscribersLength(JsonFormNotificationHandler sut, int expectedLength)
         {
             var dictionaryObject = sut
                 .GetType()

@@ -1,5 +1,4 @@
-﻿
-namespace Orbyss.Components.JsonForms.ComponentInstances
+﻿namespace Orbyss.Components.JsonForms.ComponentInstances
 {
     public class ListItemFormComponentInstance(Type componentType) : ListItemFormComponentInstanceBase
     {
@@ -9,7 +8,7 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
     public class ListItemFormComponentInstance<TComponent> : ListItemFormComponentInstance
     {
         public ListItemFormComponentInstance() : base(typeof(TComponent))
-        {            
+        {
         }
     }
 }

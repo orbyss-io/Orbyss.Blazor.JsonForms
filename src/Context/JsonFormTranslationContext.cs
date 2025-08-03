@@ -13,7 +13,7 @@ namespace Orbyss.Components.JsonForms.Context
     public sealed class JsonFormTranslationContext(IJsonPathInterpreter jsonPathInterpreter)
         : IJsonFormTranslationContext
     {
-        static readonly JsonSerializerOptions serializerOptions = GetSerializerOptions();
+        private static readonly JsonSerializerOptions serializerOptions = GetSerializerOptions();
 
         private TranslationObject[] translations = [];
         private JObject schema = [];
@@ -81,7 +81,7 @@ namespace Orbyss.Components.JsonForms.Context
             return GetDefaultTranslatedEnumItems(controlInterpretation.AbsoluteSchemaJsonPath);
         }
 
-        IEnumerable<TranslatedEnumItem>? GetDefaultTranslatedEnumItems(string absoluteSchemaJsonPath)
+        private IEnumerable<TranslatedEnumItem>? GetDefaultTranslatedEnumItems(string absoluteSchemaJsonPath)
         {
             var enumSchemaSection = schema.SelectToken(absoluteSchemaJsonPath);
             if (enumSchemaSection is null
@@ -98,7 +98,7 @@ namespace Orbyss.Components.JsonForms.Context
             });
         }
 
-        string? TranslateLabel(string? language, UiSchemaLabelInterpretation? labelInterpretation, string? absoluteSchemaPath)
+        private string? TranslateLabel(string? language, UiSchemaLabelInterpretation? labelInterpretation, string? absoluteSchemaPath)
         {
             var propertyName = !string.IsNullOrWhiteSpace(absoluteSchemaPath)
                ? jsonPathInterpreter.GetJsonPropertyNameFromPath(absoluteSchemaPath)
@@ -139,7 +139,7 @@ namespace Orbyss.Components.JsonForms.Context
             return propertyName?.ToHumanReadableName();
         }
 
-        TranslationSection? GetSectionByPath(TranslationObject translation, string path)
+        private TranslationSection? GetSectionByPath(TranslationObject translation, string path)
         {
             var pathElements = jsonPathInterpreter.GetPathElements(path);
 
@@ -165,7 +165,7 @@ namespace Orbyss.Components.JsonForms.Context
             return GetNestedSection(section, pathElements, 1);
         }
 
-        static TranslationSection? GetNestedSection(TranslationSection parent, string[] pathElements, int currentIndex)
+        private static TranslationSection? GetNestedSection(TranslationSection parent, string[] pathElements, int currentIndex)
         {
             if (parent.NestedSections is null || parent.NestedSections.Count == 0)
             {
@@ -186,7 +186,7 @@ namespace Orbyss.Components.JsonForms.Context
             return GetNestedSection(section, pathElements, currentIndex++);
         }
 
-        TranslationObject? GetTranslationObject(string? language)
+        private TranslationObject? GetTranslationObject(string? language)
         {
             if (string.IsNullOrWhiteSpace(language))
             {
@@ -196,12 +196,12 @@ namespace Orbyss.Components.JsonForms.Context
             return translations.FirstOrDefault(x => x.Language.Equals(language, StringComparison.OrdinalIgnoreCase));
         }
 
-        static IEnumerable<TranslationObject> ConvertToTranslationObjects(TranslationSchema translationSchema)
+        private static IEnumerable<TranslationObject> ConvertToTranslationObjects(TranslationSchema translationSchema)
         {
             return translationSchema.Resources.Select(x => ConvertToTranslationObject(x.Key, x.Value));
         }
 
-        static TranslationObject ConvertToTranslationObject(string language, TranslationSchemaResource resource)
+        private static TranslationObject ConvertToTranslationObject(string language, TranslationSchemaResource resource)
         {
             var json = ObjectJsonConverter.Serialize(resource.Translation);
             var sections = JsonSerializer.Deserialize<Dictionary<string, TranslationSection>>(json, serializerOptions);
@@ -212,7 +212,7 @@ namespace Orbyss.Components.JsonForms.Context
             return new TranslationObject(language, sectionsWithEqualityComparer);
         }
 
-        static JsonSerializerOptions GetSerializerOptions()
+        private static JsonSerializerOptions GetSerializerOptions()
         {
             var result = new JsonSerializerOptions
             {
