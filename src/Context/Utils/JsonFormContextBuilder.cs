@@ -9,13 +9,13 @@ namespace Orbyss.Components.JsonForms.Context.Utils
 {
     public static class JsonFormContextBuilder
     {
-        public static IJsonFormContext Build(
+        public static IJsonFormContext BuildAndInstantiate(
             JsonFormContextInitOptions options,
             IJsonFormDataContext? dataContext = null,
             IJsonFormTranslationContext? translationContext = null,
             IJsonFormNotificationHandler? notificationHandler = null,
             IFormUiSchemaInterpreter? uiSchemaInterpreter = null,
-            IFormContextFactory? elementContextFactory = null,
+            IFormElementContextFactory? elementContextFactory = null,
             IFormRuleEnforcer? ruleEnforcer = null,
             IJsonTransformer? jsonTransformer = null,
             IJsonPathInterpreter? jsonPathInterpreter = null,
@@ -27,7 +27,7 @@ namespace Orbyss.Components.JsonForms.Context.Utils
             var result = new JsonFormContext(
                 notificationHandler ?? new JsonFormNotificationHandler(), 
                 uiSchemaInterpreter ?? UiSchemaInterpreterBuilder.Build(jsonPathInterpreter, controlTypeInterpreter), 
-                elementContextFactory ?? new FormContextFactory(jsonPathInterpreter), 
+                elementContextFactory ?? new FormElementContextFactory(jsonPathInterpreter), 
                 dataContext ?? JsonFormDataContextBuilder.Build(jsonTransformer, jsonPathInterpreter, elementContextFactory), 
                 translationContext ?? new JsonFormTranslationContext(jsonPathInterpreter),
                 ruleEnforcer ?? new FormRuleEnforcer()

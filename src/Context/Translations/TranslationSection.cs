@@ -1,5 +1,4 @@
 ﻿using Orbyss.Components.Json.Models;
-using System.Text.Json.Serialization;
 
 namespace Orbyss.Components.JsonForms.Context.Translations
 {    

@@ -67,7 +67,8 @@ namespace Orbyss.Components.JsonForms.Context.Translations
 
                 if (reader.TokenType == JsonTokenType.String)
                 {
-                    var enumItem = GetEnumItem(ref reader, propertyName);
+                    var value = reader.GetString();
+                    var enumItem = new TranslatedEnumItem(value ?? string.Empty, propertyName);
                     enumItems.Add(enumItem);
                 }
 
@@ -132,18 +133,6 @@ namespace Orbyss.Components.JsonForms.Context.Translations
             var result = value.ToCharArray();
             result[0] = char.ToLower(result[0]);
             return new string(result);
-        }
-
-        static TranslatedEnumItem GetEnumItem(ref Utf8JsonReader reader, string propertyName)
-        {
-            if (reader.TokenType != JsonTokenType.String)
-            {
-                throw new JsonException($"Expected property value of type string, but was '{reader.TokenType}'");
-            }
-
-            var value = reader.GetString();
-
-            return new TranslatedEnumItem(propertyName, value ?? string.Empty);
         }
     }
 }

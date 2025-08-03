@@ -4,7 +4,7 @@ using Orbyss.Components.JsonForms.Interpretation.Interfaces;
 
 namespace Orbyss.Components.JsonForms.Context.Interfaces
 {
-    public interface IFormContextFactory
+    public interface IFormElementContextFactory
     {
         IFormElementContext Create(IUiSchemaElementInterpretation interpretation, string? parentAbsoluteDataJsonPath);
 

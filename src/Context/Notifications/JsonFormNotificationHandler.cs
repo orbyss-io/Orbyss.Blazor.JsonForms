@@ -34,7 +34,7 @@ namespace Orbyss.Components.JsonForms.Context.Notifications
                 if (!_disposed)
                 {
                     Unsubscribe(Id);
-                    _disposed = true;
+                    _disposed = true;                    
                 }
             }
         }

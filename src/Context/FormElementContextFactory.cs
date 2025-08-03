@@ -5,7 +5,7 @@ using Orbyss.Components.JsonForms.Interpretation.Interfaces;
 
 namespace Orbyss.Components.JsonForms.Context
 {
-    public sealed class FormContextFactory(IJsonPathInterpreter jsonPathInterpreter) : IFormContextFactory
+    public sealed class FormElementContextFactory(IJsonPathInterpreter jsonPathInterpreter) : IFormElementContextFactory
     {
         public IFormElementContext Create(IUiSchemaElementInterpretation interpretation, string? parentAbsoluteDataJsonPath)
         {
@@ -116,6 +116,4 @@ namespace Orbyss.Components.JsonForms.Context
             return new FormHorizontalLayoutContext(interpretation, columns);
         }
     }
-
-    
 }

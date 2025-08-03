@@ -8,7 +8,7 @@ namespace Orbyss.Components.JsonForms.Context
 {
     public sealed class JsonFormDataContext(
         IJsonTransformer jsonTransformer,
-        IFormContextFactory elementContextFactory,
+        IFormElementContextFactory elementContextFactory,
         IJsonPathInterpreter jsonPathInterpreter) 
         
         : IJsonFormDataContext
@@ -80,7 +80,6 @@ namespace Orbyss.Components.JsonForms.Context
                 jsonTransformer.AddValue(listContext.AbsoluteDataJsonPath, GetFormData(), new JObject());
             }
         }
-
 
         public void RemoveListItem(FormListContext listContext, IFormElementContext listItemContext)
         {

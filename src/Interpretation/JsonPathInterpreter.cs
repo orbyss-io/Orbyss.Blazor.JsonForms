@@ -100,7 +100,13 @@ namespace Orbyss.Components.JsonForms.Interpretation
 
         public string[] GetPathElements(string path)
         {
-            return path.Split('.');
+            var result = path
+                .Split('.', StringSplitOptions.RemoveEmptyEntries)
+                .ToList();
+
+            result.RemoveAll(x => x == "$");
+
+            return [.. result];
         }
     }
 }

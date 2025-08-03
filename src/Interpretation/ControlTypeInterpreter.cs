@@ -10,7 +10,7 @@ namespace Orbyss.Components.JsonForms.Interpretation
         public ControlType Interpret(JSchema jsonSchema, string absoluteJsonSchemaPath, string? absoluteParentSchemaJsonPath)
         {
             var jsonSchemaToken = JToken.Parse($"{jsonSchema}");
-            var schemaToken = jsonSchemaToken?.SelectToken(absoluteJsonSchemaPath, true)
+            var schemaToken = jsonSchemaToken?.SelectToken(absoluteJsonSchemaPath, false)
                 ?? throw new InvalidSchemaTypeConfigurationException("Data schema is null");
 
             var parentSchemaToken = !string.IsNullOrWhiteSpace(absoluteParentSchemaJsonPath)

@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
+﻿using Newtonsoft.Json.Schema;
 using Orbyss.Components.JsonForms.Helpers;
 using Orbyss.Components.JsonForms.Interpretation.Interfaces;
 using Orbyss.Components.JsonForms.UiSchema;
+using Orbyss.Components.JsonForms.Utils;
 
 
 namespace Orbyss.Components.JsonForms.Interpretation

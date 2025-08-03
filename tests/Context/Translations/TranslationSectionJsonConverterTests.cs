@@ -1,5 +1,4 @@
-﻿using Orbyss.Components.Json.Models;
-using Orbyss.Components.JsonForms.Context.Translations;
+﻿using Orbyss.Components.JsonForms.Context.Translations;
 using System.Text.Json;
 
 namespace Orbyss.Components.JsonForms.Tests.Context.Translations
@@ -68,6 +67,19 @@ namespace Orbyss.Components.JsonForms.Tests.Context.Translations
                 result, 
                 Is.EqualTo(sectionJson)
             );
+        }
+
+        [Test]
+        public void When_Deserialize_And_NotStartObject_Then_ThrowsJsonException()
+        {
+            // Arrange
+            const string invalidJson = "[{\"firstName\": \"First name\"}]";
+
+            // Act & Assert
+            Assert.Throws<JsonException>(() =>
+            {
+                _ = JsonSerializer.Deserialize<TranslationSection>(invalidJson, options);
+            });
         }
 
         static JsonSerializerOptions GetSerializerOptions()
