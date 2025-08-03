@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Orbyss.Components.Json.Models;
 using Orbyss.Components.JsonForms.Context.Models;
 
 namespace Orbyss.Components.JsonForms.Context.Interfaces
@@ -26,14 +27,22 @@ namespace Orbyss.Components.JsonForms.Context.Interfaces
         JToken? GetValue(Guid dataContextId);
 
         void UpdateValue(Guid dataContextId, JToken? value);
+        JToken GetFormData();
 
         string? GetDataContextError(Guid dataContextId);
 
         string? GetLabel(Guid contextId);
 
+        IEnumerable<TranslatedEnumItem> GetTranslatedEnumItems(Guid controlContextId);
+
+
         FormPageContext GetPage(int index);
 
         void InstantiateList(Guid listContextId);
+
+        void AddListItem(Guid listContextId);
+
+        void RemoveListItem(Guid listContextId, Guid listItemContextId);
 
         void ChangeLanguage(string language);
 

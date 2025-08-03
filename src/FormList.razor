@@ -1,0 +1,130 @@
+﻿@inherits FormComponentBase
+
+@if (List is not null && listInstance is not null)
+{
+    <DynamicComponentWithChildContent Type="listInstance.ComponentType" Parameters="GetListInstanceParameters()">
+        @foreach (var item in List.Items)
+        {
+            var listItemInstance = InstanceProvider.GetListItem(item);
+            <DynamicComponentWithChildContent Type="listItemInstance.ComponentType" Parameters="GetListItemInstanceParameters(item, listItemInstance)">
+                <FormElementSelector Context="@item" />
+            </DynamicComponentWithChildContent>
+        }
+    </DynamicComponentWithChildContent>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public FormListContext List { get; set; } = default!;
+
+
+    [CascadingParameter]
+    public IFormComponentInstanceProvider InstanceProvider { get; set; } = default!;
+
+    ListFormComponentInstanceBase listInstance = default!;
+
+    private IDictionary<string, object?> GetListInstanceParameters()
+    {
+        var onAddEvent = GetAddClickedEvent();
+        listInstance.OnAddItemClicked = onAddEvent;
+
+        return listInstance.GetParameters();        
+    }
+
+    private IDictionary<string, object?> GetListItemInstanceParameters(IFormElementContext item, ListItemFormComponentInstanceBase listItemInstance)
+    {
+        var onRemoveEvent = GetRemoveClickedEvent(item);
+        listItemInstance.OnRemoveItemClicked = onRemoveEvent;
+
+        return listItemInstance.GetParameters();
+    }
+
+    EventCallback GetAddClickedEvent()
+    {        
+        return new EventCallback(this, new Func<Task>(async () =>
+        {
+            if (!listInstance.ReadOnly && !listInstance.Disabled)
+            {
+                FormContext.AddListItem(List.Id);                
+                await InvokeAsync(StateHasChanged);
+            }
+        }));
+    }
+
+    EventCallback GetRemoveClickedEvent(IFormElementContext item)
+    {     
+        return new EventCallback(this, new Func<Task>(async () =>
+        {
+            if (!item.ReadOnly && !item.ReadOnly)
+            {
+                FormContext.RemoveListItem(List.Id, item.Id);                
+                await InvokeAsync(StateHasChanged);
+            }
+        }));
+    }
+
+    protected override void OnInitialized()
+    {
+        SubscribeOnLanguageChanged(OnLanguageChanged);
+        SubscribeOnDataValidated(RefreshErrors);
+        SubscribeOnDataChanged(RefreshData);
+        SubscribeOnReadOnlyChanged(RefreshReadOnly);
+        SubscribeOnDisabledChanged(RefreshDisabled);
+
+        listInstance = InstanceProvider.GetList(List);
+        listInstance.ReadOnly = FormContext.ReadOnly || List.ReadOnly;
+        listInstance.Disabled = FormContext.Disabled || List.Disabled;
+        listInstance.Title = FormContext.GetLabel(List.Id);
+
+        FormContext.InstantiateList(List.Id);
+
+        base.OnInitialized();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            listInstance.Title = FormContext.GetLabel(List.Id);
+        }
+    }
+
+    private void RefreshReadOnly()
+    {
+        listInstance.ReadOnly = FormContext.ReadOnly || List.ReadOnly;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void RefreshData()
+    {
+        listInstance.ReadOnly = FormContext.ReadOnly || List.ReadOnly;
+        listInstance.Disabled = FormContext.Disabled || List.Disabled;
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void RefreshDisabled()
+    {
+        listInstance.Disabled = FormContext.Disabled || List.Disabled;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void RefreshErrors()
+    {
+        listInstance.Error = FormContext.GetDataContextError(List!.Id);
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void OnLanguageChanged()
+    {
+        listInstance.Title = FormContext!.GetLabel(List!.Id);
+
+        if(!string.IsNullOrWhiteSpace(listInstance.Error))
+        {
+            listInstance.Error = FormContext.GetDataContextError(List!.Id);            
+        }
+
+        InvokeAsync(StateHasChanged);
+    }
+}

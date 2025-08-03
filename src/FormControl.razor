@@ -1,0 +1,191 @@
+﻿@using System.Reflection
+
+@inherits FormComponentBase
+
+@if (ControlContext is not null && FormContext is not null)
+{
+    <DynamicComponent Type="controlInstance.ComponentType" Parameters="GetControlParameters()" />
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public FormControlContext? ControlContext { get; set; }
+
+    [CascadingParameter]
+    public IFormComponentInstanceProvider ComponentInstanceProvider { get; set; } = default!;
+
+    private InputFormComponentInstanceBase controlInstance = default!;
+
+    private void OnLanguageChanged()
+    {
+        controlInstance.Label = FormContext!.GetLabel(ControlContext!.Id);
+
+        if (!string.IsNullOrWhiteSpace(controlInstance.ErrorHelperText))
+        {
+            controlInstance.ErrorHelperText = FormContext.GetDataContextError(ControlContext!.Id);            
+        }
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void RefreshErrors()
+    {        
+        controlInstance.ErrorHelperText = FormContext.GetDataContextError(ControlContext!.Id);
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void RefreshData()
+    {        
+        controlInstance.SetInputValue(
+            FormContext.GetValue(ControlContext!.Id)
+        );
+        controlInstance.ReadOnly = FormContext.ReadOnly || ControlContext.ReadOnly;
+        controlInstance.Disabled = FormContext.Disabled || ControlContext.Disabled;
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void RefreshReadOnly()
+    {
+        if (ControlContext?.ReadOnly != true)
+        {
+            controlInstance.ReadOnly = FormContext.ReadOnly;
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void RefreshDisabled()
+    {
+        if (ControlContext?.Disabled != true)
+        {
+            controlInstance.Disabled = FormContext.Disabled;
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    protected override void OnInitialized()
+    {
+        SubscribeOnLanguageChanged(OnLanguageChanged);
+        SubscribeOnDataValidated(RefreshErrors);
+        SubscribeOnDataChanged(RefreshData);
+        SubscribeOnReadOnlyChanged(RefreshReadOnly);
+        SubscribeOnDisabledChanged(RefreshDisabled);
+
+        controlInstance = ComponentInstanceProvider.GetInputField(FormContext!, ControlContext!);
+
+        controlInstance.SetInputValue(
+            FormContext!.GetValue(ControlContext!.Id)
+        );
+        controlInstance.Label = FormContext!.GetLabel(ControlContext!.Id);
+        controlInstance.ReadOnly = FormContext.ReadOnly || ControlContext.ReadOnly;
+        controlInstance.Disabled = FormContext.Disabled || ControlContext.Disabled;        
+    }
+
+    private IDictionary<string, object?> GetControlParameters()
+    {
+        if(controlInstance is DropdownFormComponentInstanceBase dropdownInstance)
+        {
+            return GetDropdownControlParameters(dropdownInstance);
+        }
+
+        return GetInputControlParameters();
+    }
+
+    private IDictionary<string, object?> GetInputControlParameters()
+    {        
+        var method = GetType().GetMethod(
+            nameof(GetTypedControlParameters),
+            BindingFlags.NonPublic | BindingFlags.Instance
+        );
+        if (method is null)
+        {
+            throw new InvalidOperationException("Get control parameters method is null");
+        }
+
+        var genericMethod = method.MakeGenericMethod(
+            ControlTypeLookup.GetForControlType(ControlContext!.Interpretation.ControlType)
+        );
+
+        var parameters = genericMethod.Invoke(this, null);
+        return (IDictionary<string, object?>)parameters!
+            ?? throw new InvalidOperationException("The result of GetTypedControlParameters was null");
+    }
+
+
+    private IDictionary<string, object?> GetTypedControlParameters<TValue>()
+    {
+        var result = controlInstance.GetParameters();
+
+        result[ComponentInstanceParameterKeys.OnValueChanged] = new EventCallback<TValue>(
+            this,
+            new Action<TValue>(OnValueChanged)
+        );
+
+        return result;
+    }
+
+    private IDictionary<string, object?> GetDropdownControlParameters(DropdownFormComponentInstanceBase dropdownInstance)
+    {        
+        if(ControlContext!.Interpretation.ControlType == ControlType.EnumList)
+        {
+            dropdownInstance.MultiSelect = true;
+            dropdownInstance.OnSelectedValuesChanged = new EventCallback<IEnumerable<string>>(
+                this,
+                new Action<IEnumerable<string>>(OnValueChanged)
+            );
+        }
+        else
+        {
+            dropdownInstance.MultiSelect = false;
+            dropdownInstance.OnValueChanged = new EventCallback<string>(
+                this,
+                new Action<string>(OnValueChanged)
+            );
+        }
+
+        dropdownInstance.Items = FormContext.GetTranslatedEnumItems(ControlContext.Id);
+
+        return dropdownInstance.GetParameters();
+    }
+
+
+    private void OnValueChanged<TValue>(TValue value)
+    {
+        if (value is not null)
+        {
+            JToken jtoken;
+            if (value is DateTimeUtcTicks dateTimeTicksValue)
+            {
+                jtoken = JToken.FromObject(dateTimeTicksValue.UtcTicks);
+            }
+            else if (value is DateUtcTicks dateTicksValue)
+            {
+                jtoken = JToken.FromObject(dateTicksValue.UtcTicks);
+            }
+            else if (value is DateOnly dateOnlyValue)
+            {
+                jtoken = JToken.FromObject(dateOnlyValue.ToString("yyyy-MM-dd"));
+            }
+            else if (value is DateTime dateTimeValue)
+            {
+                jtoken = new JValue(dateTimeValue);
+            }
+            else
+            {
+                jtoken = JToken.FromObject(value);
+            }
+
+            FormContext?.UpdateValue(ControlContext!.Id, jtoken);
+            controlInstance.SetInputValue(jtoken);
+            controlInstance.ErrorHelperText = null;
+        }
+        else
+        {
+            FormContext?.UpdateValue(ControlContext!.Id, JValue.CreateNull());
+            controlInstance.SetInputValue(JValue.CreateNull());
+            controlInstance.ErrorHelperText = null;
+        }
+
+        InvokeAsync(StateHasChanged);
+    }
+}

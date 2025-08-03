@@ -1,0 +1,20 @@
+﻿<DynamicComponent Type="@Type" Parameters="@GetParameters()">
+</DynamicComponent>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter, EditorRequired]
+    public Type Type { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public IDictionary<string, object?> Parameters { get; set; } = default!;
+
+    IDictionary<string, object?> GetParameters()
+    {
+        var result = new Dictionary<string, object?>(Parameters);
+        result[nameof(ChildContent)] = ChildContent;
+        return result;
+    }
+}

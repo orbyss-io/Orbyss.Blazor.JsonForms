@@ -5,7 +5,7 @@ using Orbyss.Components.JsonForms.Interpretation;
 using Orbyss.Components.JsonForms.Interpretation.Interfaces;
 using Orbyss.Components.JsonForms.Utils;
 
-namespace Orbyss.Components.JsonForms.Context.Builders
+namespace Orbyss.Components.JsonForms.Context.Utils
 {
     public static class JsonFormTranslationContextBuilder
     {

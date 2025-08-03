@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Unfussiness.Components.JsonForms.Context.Exceptions
+namespace Orbyss.Components.JsonForms.Interpretation.Exceptions
 {
     public sealed class InvalidSchemaTypeConfigurationException : Exception
     {

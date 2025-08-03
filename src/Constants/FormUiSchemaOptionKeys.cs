@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.UiSchema
+﻿namespace Orbyss.Components.JsonForms.Constants
 {
     public static class FormUiSchemaOptionKeys
     {

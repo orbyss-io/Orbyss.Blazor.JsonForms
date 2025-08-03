@@ -1,0 +1,21 @@
+﻿@inherits FormComponentBase
+
+@if (LayoutContext is not null)
+{
+    @foreach (var column in LayoutContext.Columns)
+    {
+        var columnInstance = ComponentInstanceProvider.GetGridColumn(column);
+
+        <DynamicComponentWithChildContent Type="@(columnInstance.ComponentType)" Parameters="columnInstance.GetParameters()">
+            <FormElementSelector Context="@column" />
+        </DynamicComponentWithChildContent>
+    }
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public FormHorizontalLayoutContext? LayoutContext { get; set; }
+
+    [CascadingParameter]
+    public IFormComponentInstanceProvider ComponentInstanceProvider { get; set; } = default!;
+}

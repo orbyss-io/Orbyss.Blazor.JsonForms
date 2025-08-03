@@ -1,0 +1,109 @@
+﻿@inherits FormComponentBase
+
+@if (CanRenderContent())
+{
+    @if (!string.IsNullOrWhiteSpace(pageTitle))
+    {
+        if (!string.IsNullOrWhiteSpace(PageTitleClass))
+        {
+            <span class="@PageTitleClass">@pageTitle</span>
+        }
+        else
+        {
+            <h3>@pageTitle</h3>
+        }
+    }
+
+    <DynamicComponentWithChildContent Type="@(pageGridInstance.ComponentType)" Parameters="pageGridInstance.GetParameters()">
+        @foreach (var context in Page!.ElementContexts)
+        {
+            <FormElementSelector Context="@context" />
+        }
+    </DynamicComponentWithChildContent>
+
+    @if (OnSubmitClicked.HasValue && OnSubmitClicked.Value.HasDelegate)
+    {
+        <DynamicComponentWithChildContent Type="@(buttonGridInstance.ComponentType)" Parameters="buttonGridInstance.GetParameters()">
+            <DynamicComponentWithChildContent Type="@(buttonGridRowInstance.ComponentType)" Parameters="buttonGridRowInstance.GetParameters()">
+                <DynamicComponentWithChildContent Type="@(buttonGridColumnInstance.ComponentType)" Parameters="buttonGridColumnInstance.GetParameters()">
+
+                    <DynamicComponent Type="@(submitButtonInstance.ComponentType)" Parameters="submitButtonInstance.GetParameters()" />
+
+                </DynamicComponentWithChildContent>
+            </DynamicComponentWithChildContent>
+        </DynamicComponentWithChildContent>
+    }
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public FormPageContext? Page { get; set; }
+
+    [CascadingParameter]
+    public IFormComponentInstanceProvider ComponentInstanceProvider { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public EventCallback? OnSubmitClicked { get; set; }
+
+    [CascadingParameter(Name = "PageTitleClass")]
+    public string? PageTitleClass { get; set; }
+
+    IFormComponentInstance pageGridInstance = default!;
+    IFormComponentInstance buttonGridInstance = default!;
+    IFormComponentInstance buttonGridRowInstance = default!;
+    IFormComponentInstance buttonGridColumnInstance = default!;
+    ButtonFormComponentInstanceBase submitButtonInstance = default!;
+
+    private string? pageTitle;
+
+    bool CanRenderContent()
+    {
+        return Page is not null
+            && pageGridInstance is not null
+            && buttonGridInstance is not null
+            && buttonGridRowInstance is not null
+            && buttonGridColumnInstance is not null
+            && submitButtonInstance is not null;
+    }
+
+    protected override void OnInitialized()
+    {
+        SubscribeOnLanguageChanged(() =>
+        {
+            pageTitle = FormContext?.GetLabel(Page!.Id);
+
+            submitButtonInstance.Language = FormContext?.ActiveLanguage;
+
+            InvokeAsync(StateHasChanged);
+        });
+
+        pageTitle = FormContext?.GetLabel(Page!.Id);
+
+        pageGridInstance = ComponentInstanceProvider.GetGrid(form: FormContext, page: Page);
+        buttonGridInstance = ComponentInstanceProvider.GetGrid(FormContext, Page);
+        buttonGridRowInstance = ComponentInstanceProvider.GetGridRow(null);
+        buttonGridColumnInstance = ComponentInstanceProvider.GetGridColumn(null);
+
+        submitButtonInstance = ComponentInstanceProvider.GetButton(FormButtonType.Submit, FormContext);
+        submitButtonInstance.Language = FormContext?.ActiveLanguage;
+        submitButtonInstance.OnClicked = GetSubmitCallback();
+    }
+
+    private EventCallback GetSubmitCallback()
+    {
+        if (!OnSubmitClicked.HasValue || !OnSubmitClicked.Value.HasDelegate)
+        {
+            return EventCallback.Empty;
+        }
+
+        return new EventCallback(this, new Func<Task>(() =>
+        {
+            if (FormContext.Validate(Page!.Id))
+            {
+                return OnSubmitClicked.Value.InvokeAsync();
+            }
+
+            return Task.CompletedTask;
+        }));
+    }
+}

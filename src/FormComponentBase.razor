@@ -1,0 +1,91 @@
+﻿@implements IDisposable
+@implements IAsyncDisposable
+
+@code {
+    [CascadingParameter]
+    public IJsonFormContext FormContext { get; set; } = default!;
+
+    private readonly List<IDisposable> _disposables = new();
+    private readonly List<IAsyncDisposable> _asyncDisposables = new();
+
+    protected void TrackDisposable(IDisposable disposable) => _disposables.Add(disposable);
+    protected void TrackAsyncDisposable(IAsyncDisposable disposable) => _asyncDisposables.Add(disposable);
+
+    protected void SubscribeOnLanguageChanged(Action callback)
+    {
+        var token = FormContext.FormNotification.Subscribe(
+            JsonFormNotificationType.OnLanguageChanged, 
+            callback
+        );
+
+        TrackDisposable(token);
+    }
+
+    protected void SubscribeOnDataChanged(Action callback)
+    {
+        var token = FormContext.FormNotification.Subscribe(
+            JsonFormNotificationType.OnDataChanged,
+            callback
+        );
+
+        TrackDisposable(token);
+    }
+
+    protected void SubscribeOnReadOnlyChanged(Action callback)
+    {
+        var token = FormContext.FormNotification.Subscribe(
+            JsonFormNotificationType.OnReadOnlyChanged,
+            callback
+        );
+
+        TrackDisposable(token);
+    }
+
+    protected void SubscribeOnDisabledChanged(Action callback)
+    {
+        var token = FormContext.FormNotification.Subscribe(
+            JsonFormNotificationType.OnDisabledChanged,
+            callback
+        );
+
+        TrackDisposable(token);
+    }
+
+    protected void SubscribeOnDataValidated(Action callback)
+    {
+        var token = FormContext.FormNotification.Subscribe(
+            JsonFormNotificationType.OnDataValidated,
+            callback
+        );
+
+        TrackDisposable(token);
+    }
+
+    public void Dispose()
+    {
+        foreach (var d in _disposables)
+        {
+            d.Dispose();            
+        }
+
+        _disposables.Clear();
+        Dispose(disposing: true);
+
+        GC.SuppressFinalize(this);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        foreach (var d in _asyncDisposables)
+        {
+            await d.DisposeAsync();            
+        }
+
+        _asyncDisposables.Clear();
+        Dispose(disposing: true);
+
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing) { }
+}

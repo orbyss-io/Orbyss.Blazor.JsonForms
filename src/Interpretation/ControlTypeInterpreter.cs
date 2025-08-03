@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
+using Orbyss.Components.JsonForms.Interpretation.Exceptions;
 using Orbyss.Components.JsonForms.Interpretation.Interfaces;
-using Unfussiness.Components.JsonForms.Context.Exceptions;
 
 namespace Orbyss.Components.JsonForms.Interpretation
 {

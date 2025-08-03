@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json.Schema;
-using Orbyss.Components.JsonForms.Helpers;
+using Orbyss.Components.JsonForms.Constants;
 using Orbyss.Components.JsonForms.Interpretation.Interfaces;
 using Orbyss.Components.JsonForms.UiSchema;
 using Orbyss.Components.JsonForms.Utils;

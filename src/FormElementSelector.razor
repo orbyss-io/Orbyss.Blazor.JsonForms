@@ -1,0 +1,35 @@
+﻿@inherits FormComponentBase
+
+@if (Context is not null && !Context.Hidden)
+{
+    switch (Context.Interpretation.ElementType)
+    {
+        case UiSchemaElementInterpretationType.VerticalLayout:
+            <FormVerticalLayout LayoutContext="Context as FormVerticalLayoutContext" />
+            break;
+        case UiSchemaElementInterpretationType.HorizontalLayout:
+            <FormHorizontalLayout LayoutContext="Context as FormHorizontalLayoutContext" />
+            break;
+        case UiSchemaElementInterpretationType.Control:
+            <FormControl ControlContext="Context as FormControlContext" />
+            break;
+        case UiSchemaElementInterpretationType.List:
+            <FormList List="Context as FormListContext"/>
+            break;
+    }
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public IFormElementContext? Context { get; set; }
+
+    protected override void OnInitialized()
+    {
+        SubscribeOnDataChanged(() =>
+        {
+            InvokeAsync(StateHasChanged);
+        });
+
+        base.OnInitialized();
+    }
+}

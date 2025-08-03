@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.Helpers
+﻿namespace Orbyss.Components.JsonForms.Utils
 {
     internal static class StringExtensions
     {

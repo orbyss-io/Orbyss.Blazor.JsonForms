@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
+using Orbyss.Components.Json.Models;
 using Orbyss.Components.JsonForms.Context.Interfaces;
 using Orbyss.Components.JsonForms.Context.Models;
 using Orbyss.Components.JsonForms.Context.Notifications;
-using Orbyss.Components.JsonForms.Helpers;
 using Orbyss.Components.JsonForms.Interpretation.Interfaces;
+using Orbyss.Components.JsonForms.Utils;
 
 namespace Orbyss.Components.JsonForms.Context
 {
@@ -101,6 +102,11 @@ namespace Orbyss.Components.JsonForms.Context
             notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
         }
 
+        public JToken GetFormData()
+        {
+            return dataContext.GetFormData();
+        }
+
         public string? GetDataContextError(Guid dataContextId)
         {
             var match = FindContextById(dataContextId);
@@ -142,6 +148,15 @@ namespace Orbyss.Components.JsonForms.Context
             throw new ArgumentException($"Could not get the translated label for context '{match.Id}'");
         }
 
+        public IEnumerable<TranslatedEnumItem> GetTranslatedEnumItems(Guid controlContextId)
+        {
+            var match = FindContextById(controlContextId);
+            var controlContext = CastControl(match);
+
+            return translationContext
+                .TranslateEnum(ActiveLanguage, controlContext.Interpretation) ?? [];
+        }
+
         public FormPageContext GetPage(int index)
         {
             return pages[index];
@@ -152,6 +167,24 @@ namespace Orbyss.Components.JsonForms.Context
             var listMatch = FindContextById(listContextId);
             var listContext = CastList(listMatch);
             dataContext.InstantiateList(listContext);
+        }
+
+        public void AddListItem(Guid listContextId)
+        {
+            var match = FindContextById(listContextId);
+            var listContext = CastList(match);
+            dataContext.AddListItem(listContext);
+            notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
+        }
+
+        public void RemoveListItem(Guid listContextId, Guid listItemContextId)
+        {
+            var listMatch = FindContextById(listContextId);
+            var listItemMatch = FindContextById(listItemContextId);
+
+            var listContext = CastList(listMatch);
+            dataContext.RemoveListItem(listContext, listItemMatch);
+            notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
         }
 
         public void ChangeLanguage(string language)

@@ -1,0 +1,49 @@
+﻿@inherits FormComponentBase
+
+@if (LayoutContext is not null)
+{
+    @if (!string.IsNullOrWhiteSpace(verticalLayoutTitle))
+    {
+        if (!string.IsNullOrWhiteSpace(GroupTitleClass))
+        {
+            <span class="@GroupTitleClass">@verticalLayoutTitle</span>
+        }
+        else
+        {
+            <h4 style="margin-top:20px;margin-left:20px">@verticalLayoutTitle</h4>
+        }
+    }
+
+    @foreach (var row in LayoutContext.Rows)
+    {
+        var rowInstance = ComponentInstanceProvider.GetGridRow(row);
+        <DynamicComponentWithChildContent Type="@(rowInstance.ComponentType)" Parameters="rowInstance.GetParameters()">
+            <FormElementSelector Context="@row" />
+        </DynamicComponentWithChildContent>
+    }
+}
+
+@code {
+    private string? verticalLayoutTitle;
+
+    [Parameter, EditorRequired]
+    public FormVerticalLayoutContext? LayoutContext { get; set; }
+
+    [CascadingParameter]
+    public IFormComponentInstanceProvider ComponentInstanceProvider { get; set; } = default!;
+
+    [CascadingParameter(Name = "GroupTitleClass")]
+    public string? GroupTitleClass { get; set; }
+
+    private void OnLanguageChanged()
+    {
+        verticalLayoutTitle = FormContext!.GetLabel(LayoutContext!.Id);
+        InvokeAsync(StateHasChanged);
+    }
+
+    protected override void OnInitialized()
+    {
+        SubscribeOnLanguageChanged(OnLanguageChanged);
+        verticalLayoutTitle = FormContext!.GetLabel(LayoutContext!.Id);
+    }
+}

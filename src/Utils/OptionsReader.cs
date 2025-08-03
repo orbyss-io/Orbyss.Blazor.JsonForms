@@ -2,7 +2,7 @@
 using System.Text.Json.Nodes;
 using System.Text.Json;
 
-namespace Orbyss.Components.JsonForms.Helpers
+namespace Orbyss.Components.JsonForms.Utils
 {
     public static class OptionsReader
     {
