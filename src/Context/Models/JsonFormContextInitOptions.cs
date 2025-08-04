@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Orbyss.Components.Json.Models;
-using Orbyss.Components.JsonForms.UiSchema;
-using Orbyss.Components.JsonForms.Utils;
+using Orbyss.Blazor.JsonForms.UiSchema;
+using Orbyss.Blazor.JsonForms.Utils;
 
-namespace Orbyss.Components.JsonForms.Context.Models
+namespace Orbyss.Blazor.JsonForms.Context.Models
 {
     public sealed class JsonFormContextInitOptions
     {

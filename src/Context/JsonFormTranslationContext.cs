@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Orbyss.Components.Json.Models;
-using Orbyss.Components.JsonForms.Context.Interfaces;
-using Orbyss.Components.JsonForms.Context.Translations;
-using Orbyss.Components.JsonForms.Interpretation;
-using Orbyss.Components.JsonForms.Interpretation.Interfaces;
-using Orbyss.Components.JsonForms.Utils;
+using Orbyss.Blazor.JsonForms.Context.Interfaces;
+using Orbyss.Blazor.JsonForms.Context.Translations;
+using Orbyss.Blazor.JsonForms.Interpretation;
+using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
+using Orbyss.Blazor.JsonForms.Utils;
 using System.Text.Json;
 
-namespace Orbyss.Components.JsonForms.Context
+namespace Orbyss.Blazor.JsonForms.Context
 {
     public sealed class JsonFormTranslationContext(IJsonPathInterpreter jsonPathInterpreter)
         : IJsonFormTranslationContext

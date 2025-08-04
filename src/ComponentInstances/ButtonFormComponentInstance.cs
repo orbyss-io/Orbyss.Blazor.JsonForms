@@ -1,5 +1,5 @@
 ﻿
-namespace Orbyss.Components.JsonForms.ComponentInstances
+namespace Orbyss.Blazor.JsonForms.ComponentInstances
 {
     public class ButtonFormComponentInstance : ButtonFormComponentInstanceBase
     {

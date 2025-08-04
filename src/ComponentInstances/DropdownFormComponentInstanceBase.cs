@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Orbyss.Components.Json.Models;
 
-namespace Orbyss.Components.JsonForms.ComponentInstances
+namespace Orbyss.Blazor.JsonForms.ComponentInstances
 {
     public abstract class DropdownFormComponentInstanceBase : InputFormComponentInstanceBase
     {

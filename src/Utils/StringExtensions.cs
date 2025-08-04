@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.Utils
+﻿namespace Orbyss.Blazor.JsonForms.Utils
 {
     internal static class StringExtensions
     {

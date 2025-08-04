@@ -1,9 +1,9 @@
-﻿using Orbyss.Components.JsonForms.ComponentInstances.Interfaces;
-using Orbyss.Components.JsonForms.Constants;
-using Orbyss.Components.JsonForms.Utils;
+﻿using Orbyss.Blazor.JsonForms.ComponentInstances.Interfaces;
+using Orbyss.Blazor.JsonForms.Constants;
+using Orbyss.Blazor.JsonForms.Utils;
 using System.Globalization;
 
-namespace Orbyss.Components.JsonForms.ComponentInstances
+namespace Orbyss.Blazor.JsonForms.ComponentInstances
 {
     public abstract class FormComponentInstanceBase : IFormComponentInstance
     {

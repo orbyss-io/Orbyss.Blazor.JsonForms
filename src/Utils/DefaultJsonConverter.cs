@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Orbyss.Components.JsonForms.Utils
+namespace Orbyss.Blazor.JsonForms.Utils
 {
     public static class DefaultJsonConverter
     {

@@ -1,6 +1,6 @@
-﻿using Orbyss.Components.JsonForms.Context.Interfaces;
+﻿using Orbyss.Blazor.JsonForms.Context.Interfaces;
 
-namespace Orbyss.Components.JsonForms.Context.Notifications
+namespace Orbyss.Blazor.JsonForms.Context.Notifications
 {
     public sealed class JsonFormNotificationHandler : IJsonFormNotificationHandler
     {

@@ -1,11 +1,11 @@
-﻿using Orbyss.Components.JsonForms.Context.Interfaces;
-using Orbyss.Components.JsonForms.Context.Models;
-using Orbyss.Components.JsonForms.Context.Notifications;
-using Orbyss.Components.JsonForms.Interpretation;
-using Orbyss.Components.JsonForms.Interpretation.Interfaces;
-using Orbyss.Components.JsonForms.Interpretation.Utils;
+﻿using Orbyss.Blazor.JsonForms.Context.Interfaces;
+using Orbyss.Blazor.JsonForms.Context.Models;
+using Orbyss.Blazor.JsonForms.Context.Notifications;
+using Orbyss.Blazor.JsonForms.Interpretation;
+using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
+using Orbyss.Blazor.JsonForms.Interpretation.Utils;
 
-namespace Orbyss.Components.JsonForms.Context.Utils
+namespace Orbyss.Blazor.JsonForms.Context.Utils
 {
     public static class JsonFormContextBuilder
     {

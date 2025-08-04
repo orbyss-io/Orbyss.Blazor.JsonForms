@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.Constants
+﻿namespace Orbyss.Blazor.JsonForms.Constants
 {
     public static class FormUiSchemaOptionKeys
     {

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Orbyss.Components.JsonForms.Constants
+namespace Orbyss.Blazor.JsonForms.Constants
 {
     public static class FormCulture
     {

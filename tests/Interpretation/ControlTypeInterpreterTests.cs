@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Schema;
-using Orbyss.Components.JsonForms.Interpretation;
-using Orbyss.Components.JsonForms.Interpretation.Exceptions;
+using Orbyss.Blazor.JsonForms.Interpretation;
+using Orbyss.Blazor.JsonForms.Interpretation.Exceptions;
 
-namespace Orbyss.Components.JsonForms.Tests.Interpretation
+namespace Orbyss.Blazor.JsonForms.Tests.Interpretation
 {
     [TestFixture]
     public sealed class ControlTypeInterpreterTests

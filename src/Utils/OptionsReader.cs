@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace Orbyss.Components.JsonForms.Utils
+namespace Orbyss.Blazor.JsonForms.Utils
 {
     public static class OptionsReader
     {

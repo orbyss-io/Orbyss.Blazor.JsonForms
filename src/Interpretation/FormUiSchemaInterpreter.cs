@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json.Schema;
-using Orbyss.Components.JsonForms.Constants;
-using Orbyss.Components.JsonForms.Interpretation.Interfaces;
-using Orbyss.Components.JsonForms.UiSchema;
-using Orbyss.Components.JsonForms.Utils;
+using Orbyss.Blazor.JsonForms.Constants;
+using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
+using Orbyss.Blazor.JsonForms.UiSchema;
+using Orbyss.Blazor.JsonForms.Utils;
 
-namespace Orbyss.Components.JsonForms.Interpretation
+namespace Orbyss.Blazor.JsonForms.Interpretation
 {
     public sealed class FormUiSchemaInterpreter(IJsonPathInterpreter jsonPathInterpreter, IControlTypeInterpreter controlTypeInterpreter) : IFormUiSchemaInterpreter
     {

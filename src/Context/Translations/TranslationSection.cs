@@ -1,6 +1,6 @@
 ﻿using Orbyss.Components.Json.Models;
 
-namespace Orbyss.Components.JsonForms.Context.Translations
+namespace Orbyss.Blazor.JsonForms.Context.Translations
 {
     public sealed record TranslationSection(
         string? Label,

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Schema;
 using Orbyss.Components.Json.Models;
-using Orbyss.Components.JsonForms.Interpretation;
+using Orbyss.Blazor.JsonForms.Interpretation;
 
-namespace Orbyss.Components.JsonForms.Context.Interfaces
+namespace Orbyss.Blazor.JsonForms.Context.Interfaces
 {
     public interface IJsonFormTranslationContext
     {

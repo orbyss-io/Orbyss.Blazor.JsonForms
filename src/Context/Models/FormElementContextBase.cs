@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
-using Orbyss.Components.JsonForms.Context.Interfaces;
-using Orbyss.Components.JsonForms.Interpretation.Interfaces;
+using Orbyss.Blazor.JsonForms.Context.Interfaces;
+using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 
-namespace Orbyss.Components.JsonForms.Context.Models
+namespace Orbyss.Blazor.JsonForms.Context.Models
 {
     public abstract class FormElementContextBase<TInterpretation>(TInterpretation interpretation) : IFormElementContext
         where TInterpretation : class, IUiSchemaElementInterpretation

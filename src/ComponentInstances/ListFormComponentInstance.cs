@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.ComponentInstances
+﻿namespace Orbyss.Blazor.JsonForms.ComponentInstances
 {
     public class ListFormComponentInstance(Type componentType) : ListFormComponentInstanceBase
     {

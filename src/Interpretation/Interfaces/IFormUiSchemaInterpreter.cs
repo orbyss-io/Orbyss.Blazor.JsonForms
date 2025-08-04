@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Schema;
-using Orbyss.Components.JsonForms.UiSchema;
+using Orbyss.Blazor.JsonForms.UiSchema;
 
-namespace Orbyss.Components.JsonForms.Interpretation.Interfaces
+namespace Orbyss.Blazor.JsonForms.Interpretation.Interfaces
 {
     public interface IFormUiSchemaInterpreter
     {

@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
-using Orbyss.Components.JsonForms.Context.Models;
-using Orbyss.Components.JsonForms.Context.Notifications;
-using Orbyss.Components.JsonForms.Context.Translations;
-using Orbyss.Components.JsonForms.Context.Utils;
+using Orbyss.Blazor.JsonForms.Context.Models;
+using Orbyss.Blazor.JsonForms.Context.Notifications;
+using Orbyss.Blazor.JsonForms.Context.Translations;
+using Orbyss.Blazor.JsonForms.Context.Utils;
 
-namespace Orbyss.Components.JsonForms.Tests.Context
+namespace Orbyss.Blazor.JsonForms.Tests.Context
 {
     [TestFixture]
     public sealed class JsonFormContextTests

@@ -1,7 +1,7 @@
-﻿using Orbyss.Components.JsonForms.Context.Translations;
+﻿using Orbyss.Blazor.JsonForms.Context.Translations;
 using System.Text.Json;
 
-namespace Orbyss.Components.JsonForms.Tests.Context.Translations
+namespace Orbyss.Blazor.JsonForms.Tests.Context.Translations
 {
     [TestFixture]
     public class TranslationSectionJsonConverterTests

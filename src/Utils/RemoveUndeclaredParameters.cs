@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Orbyss.Components.JsonForms.Utils
+namespace Orbyss.Blazor.JsonForms.Utils
 {
     public static class RemoveUndeclaredParameters
     {

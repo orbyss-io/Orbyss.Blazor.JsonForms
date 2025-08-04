@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Orbyss.Components.Json.Models;
 
-namespace Orbyss.Components.JsonForms.ComponentInstances
+namespace Orbyss.Blazor.JsonForms.ComponentInstances
 {
     public class DateTimeInputFormComponentInstance<TComponent> : DateInputFormComponentInstance<DateTime?>
     {

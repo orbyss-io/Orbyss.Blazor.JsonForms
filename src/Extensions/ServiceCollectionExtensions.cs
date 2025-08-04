@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Orbyss.Components.JsonForms.Context;
-using Orbyss.Components.JsonForms.Context.Interfaces;
-using Orbyss.Components.JsonForms.Context.Notifications;
-using Orbyss.Components.JsonForms.Interpretation;
-using Orbyss.Components.JsonForms.Interpretation.Interfaces;
+using Orbyss.Blazor.JsonForms.Context;
+using Orbyss.Blazor.JsonForms.Context.Interfaces;
+using Orbyss.Blazor.JsonForms.Context.Notifications;
+using Orbyss.Blazor.JsonForms.Interpretation;
+using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 
-namespace Orbyss.Components.JsonForms.Extensions
+namespace Orbyss.Blazor.JsonForms.Extensions
 {
     public static class ServiceCollectionExtensions
     {

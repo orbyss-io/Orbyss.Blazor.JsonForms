@@ -1,8 +1,8 @@
-﻿using Orbyss.Components.JsonForms.Context.Notifications;
+﻿using Orbyss.Blazor.JsonForms.Context.Notifications;
 using System.Collections;
 using System.Reflection;
 
-namespace Orbyss.Components.JsonForms.Tests.Context.Notifications
+namespace Orbyss.Blazor.JsonForms.Tests.Context.Notifications
 {
     [TestFixture]
     public class JsonFormNotificationHandlerTests

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
-using Orbyss.Components.JsonForms.Interpretation.Interfaces;
+using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 
-namespace Orbyss.Components.JsonForms.Context.Interfaces
+namespace Orbyss.Blazor.JsonForms.Context.Interfaces
 {
     public interface IFormElementContext
     {

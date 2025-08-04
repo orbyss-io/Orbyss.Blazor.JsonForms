@@ -1,9 +1,9 @@
-﻿using Orbyss.Components.JsonForms.ComponentInstances;
-using Orbyss.Components.JsonForms.ComponentInstances.Interfaces;
-using Orbyss.Components.JsonForms.Context.Interfaces;
-using Orbyss.Components.JsonForms.Context.Models;
+﻿using Orbyss.Blazor.JsonForms.ComponentInstances;
+using Orbyss.Blazor.JsonForms.ComponentInstances.Interfaces;
+using Orbyss.Blazor.JsonForms.Context.Interfaces;
+using Orbyss.Blazor.JsonForms.Context.Models;
 
-namespace Orbyss.Components.JsonForms
+namespace Orbyss.Blazor.JsonForms
 {
     public interface IFormComponentInstanceProvider
     {

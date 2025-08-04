@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Orbyss.Components.JsonForms.Context.Translations
+namespace Orbyss.Blazor.JsonForms.Context.Translations
 {
     public sealed class TranslationSectionJsonConverter : JsonConverter<TranslationSection>
     {

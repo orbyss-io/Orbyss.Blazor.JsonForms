@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.Interpretation.Exceptions
+﻿namespace Orbyss.Blazor.JsonForms.Interpretation.Exceptions
 {
     public sealed class SchemaTypeNotSpecifiedException : Exception
     {

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
-using Orbyss.Components.JsonForms.Interpretation;
+using Orbyss.Blazor.JsonForms.Interpretation;
 
-namespace Orbyss.Components.JsonForms.Context.Models
+namespace Orbyss.Blazor.JsonForms.Context.Models
 {
     public sealed class FormControlContext(string absoluteDataPath, string? absoluteParentDataPath, UiSchemaControlInterpretation interpretation)
         : FormControlContextBase<UiSchemaControlInterpretation>(interpretation, absoluteDataPath, absoluteParentDataPath)

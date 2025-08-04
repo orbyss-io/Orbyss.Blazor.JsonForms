@@ -2,9 +2,9 @@
 using JLio.Core;
 using JLio.Core.Models;
 using Newtonsoft.Json.Linq;
-using Orbyss.Components.JsonForms.Context.Interfaces;
+using Orbyss.Blazor.JsonForms.Context.Interfaces;
 
-namespace Orbyss.Components.JsonForms.Context
+namespace Orbyss.Blazor.JsonForms.Context
 {
     public sealed class JlioJsonTransformer : IJsonTransformer
     {

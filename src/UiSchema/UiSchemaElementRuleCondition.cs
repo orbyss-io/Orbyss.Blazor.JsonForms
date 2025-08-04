@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 
-namespace Orbyss.Components.JsonForms.UiSchema
+namespace Orbyss.Blazor.JsonForms.UiSchema
 {
     public record UiSchemaElementRuleCondition(
         [property: JsonProperty(PropertyName = "scope"), JsonPropertyName("scope")] string Scope,

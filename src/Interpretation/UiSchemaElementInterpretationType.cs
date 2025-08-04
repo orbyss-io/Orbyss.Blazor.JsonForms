@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.Interpretation
+﻿namespace Orbyss.Blazor.JsonForms.Interpretation
 {
     public enum UiSchemaElementInterpretationType
     {

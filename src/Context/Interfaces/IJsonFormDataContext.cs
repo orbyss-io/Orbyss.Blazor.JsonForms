@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
-using Orbyss.Components.JsonForms.Context.Models;
+using Orbyss.Blazor.JsonForms.Context.Models;
 
-namespace Orbyss.Components.JsonForms.Context.Interfaces
+namespace Orbyss.Blazor.JsonForms.Context.Interfaces
 {
     public interface IJsonFormDataContext
     {

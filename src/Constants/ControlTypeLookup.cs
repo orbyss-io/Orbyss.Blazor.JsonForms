@@ -1,9 +1,9 @@
 ﻿using Orbyss.Components.Json.Models;
-using Orbyss.Components.JsonForms.Interpretation;
+using Orbyss.Blazor.JsonForms.Interpretation;
 using System.Collections.ObjectModel;
 using System.Reflection;
 
-namespace Orbyss.Components.JsonForms.Constants
+namespace Orbyss.Blazor.JsonForms.Constants
 {
     public static class ControlTypeLookup
     {

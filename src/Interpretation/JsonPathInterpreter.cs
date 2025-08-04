@@ -1,6 +1,6 @@
-﻿using Orbyss.Components.JsonForms.Interpretation.Interfaces;
+﻿using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 
-namespace Orbyss.Components.JsonForms.Interpretation
+namespace Orbyss.Blazor.JsonForms.Interpretation
 {
     public sealed class JsonPathInterpreter : IJsonPathInterpreter
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections.ObjectModel;
 
-namespace Orbyss.Components.JsonForms.ComponentInstances
+namespace Orbyss.Blazor.JsonForms.ComponentInstances
 {
     public abstract class ButtonFormComponentInstanceBase : FormComponentInstanceBase
     {

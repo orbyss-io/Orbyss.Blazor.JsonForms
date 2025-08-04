@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.ComponentInstances.Interfaces
+﻿namespace Orbyss.Blazor.JsonForms.ComponentInstances.Interfaces
 {
     public interface IFormComponentInstance
     {

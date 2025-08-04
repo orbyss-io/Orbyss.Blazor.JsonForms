@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
-using Orbyss.Components.JsonForms.UiSchema;
+using Orbyss.Blazor.JsonForms.UiSchema;
 
-namespace Orbyss.Components.JsonForms.Interpretation
+namespace Orbyss.Blazor.JsonForms.Interpretation
 {
     public abstract class UiSchemaControlInterpretationBase(
         UiSchemaLabelInterpretation? labelInterpretation,

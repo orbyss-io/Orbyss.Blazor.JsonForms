@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.Context.Translations
+﻿namespace Orbyss.Blazor.JsonForms.Context.Translations
 {
     public static class DefaultJsonFormValidationMessages
     {

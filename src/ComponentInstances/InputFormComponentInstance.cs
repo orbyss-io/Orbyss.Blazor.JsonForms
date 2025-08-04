@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Orbyss.Components.JsonForms.ComponentInstances
+namespace Orbyss.Blazor.JsonForms.ComponentInstances
 {
     public class InputFormComponentInstance(Type componentType, Func<JToken?, object?> convertValue) : InputFormComponentInstanceBase
     {

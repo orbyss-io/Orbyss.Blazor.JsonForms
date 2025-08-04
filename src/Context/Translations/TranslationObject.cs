@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.Context.Translations
+﻿namespace Orbyss.Blazor.JsonForms.Context.Translations
 {
     public sealed class TranslationObject(string language, IDictionary<string, TranslationSection> sections)
     {

@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
-using Orbyss.Components.JsonForms.Context;
-using Orbyss.Components.JsonForms.Context.Utils;
-using Orbyss.Components.JsonForms.Interpretation;
-using Orbyss.Components.JsonForms.UiSchema;
+using Orbyss.Blazor.JsonForms.Context;
+using Orbyss.Blazor.JsonForms.Context.Utils;
+using Orbyss.Blazor.JsonForms.Interpretation;
+using Orbyss.Blazor.JsonForms.UiSchema;
 
-namespace Orbyss.Components.JsonForms.Tests.Context
+namespace Orbyss.Blazor.JsonForms.Tests.Context
 {
     [TestFixture]
     public sealed class FormRuleEnforcerTests

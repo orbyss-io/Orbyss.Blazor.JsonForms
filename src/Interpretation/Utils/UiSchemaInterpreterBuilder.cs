@@ -1,6 +1,6 @@
-﻿using Orbyss.Components.JsonForms.Interpretation.Interfaces;
+﻿using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 
-namespace Orbyss.Components.JsonForms.Interpretation.Utils
+namespace Orbyss.Blazor.JsonForms.Interpretation.Utils
 {
     public static class UiSchemaInterpreterBuilder
     {

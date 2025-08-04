@@ -1,4 +1,4 @@
-﻿namespace Orbyss.Components.JsonForms.Interpretation.Interfaces
+﻿namespace Orbyss.Blazor.JsonForms.Interpretation.Interfaces
 {
     public interface IUiSchemaElementInterpretation
     {

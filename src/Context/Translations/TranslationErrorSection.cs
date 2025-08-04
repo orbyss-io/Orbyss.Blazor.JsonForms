@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 using SystemTextJsonIgnoreAttribute = System.Text.Json.Serialization.JsonIgnoreAttribute;
 
-namespace Orbyss.Components.JsonForms.Context.Translations
+namespace Orbyss.Blazor.JsonForms.Context.Translations
 {
     public sealed record TranslationErrorSection(
         [
