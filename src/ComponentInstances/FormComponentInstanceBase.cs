@@ -1,5 +1,7 @@
 ﻿using Orbyss.Components.JsonForms.ComponentInstances.Interfaces;
+using Orbyss.Components.JsonForms.Constants;
 using Orbyss.Components.JsonForms.Utils;
+using System.Globalization;
 
 namespace Orbyss.Components.JsonForms.ComponentInstances
 {
@@ -11,11 +13,14 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
 
         public string? Style { get; set; }
 
+        public CultureInfo Culture { get; set; } = FormCulture.Instance;
+
         public IDictionary<string, object?> GetParameters()
         {
             var result = GetParametersCore();
             result[nameof(Class)] = Class;
             result[nameof(Style)] = Style;
+            result[nameof(Culture)] = Culture;
 
             RemoveUndeclaredParameters.Remove(ComponentType, result);
 
