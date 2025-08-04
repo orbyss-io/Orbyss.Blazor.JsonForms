@@ -10,10 +10,10 @@ namespace Orbyss.Components.JsonForms.Context
 {
     public sealed class JsonFormContext(
         IJsonFormNotificationHandler notificationHandler,
-        IFormUiSchemaInterpreter uiSchemaInterpreter,
-        IFormElementContextFactory elementContextFactory,
         IJsonFormDataContext dataContext,
         IJsonFormTranslationContext translationContext,
+        IFormUiSchemaInterpreter uiSchemaInterpreter,
+        IFormElementContextFactory elementContextFactory,
         IFormRuleEnforcer ruleEnforcer
     )
         : IJsonFormContext
