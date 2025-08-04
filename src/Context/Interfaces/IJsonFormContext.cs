@@ -24,13 +24,15 @@ namespace Orbyss.Components.JsonForms.Context.Interfaces
 
         bool Validate(Guid? pageId = null);
 
-        JToken? GetValue(Guid dataContextId);
+        JToken? GetValue(Guid controlContextId);
 
-        void UpdateValue(Guid dataContextId, JToken? value);
+        void UpdateValue(Guid controlContextId, JToken? value);
 
         JToken GetFormData();
 
-        string? GetDataContextError(Guid dataContextId);
+        void UpdateFormData(Action<JToken> updateDelegate);
+
+        string? GetDataContextError(Guid controlContextId);
 
         string? GetLabel(Guid contextId);
 

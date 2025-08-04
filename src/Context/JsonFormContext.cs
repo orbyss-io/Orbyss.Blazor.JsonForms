@@ -86,18 +86,18 @@ namespace Orbyss.Components.JsonForms.Context
             return result;
         }
 
-        public JToken? GetValue(Guid dataContextId)
+        public JToken? GetValue(Guid controlContextId)
         {
-            var match = FindContextById(dataContextId);
-            var dataElement = CastControl(match);
-            return dataContext.GetValue(dataElement);
+            var match = FindContextById(controlContextId);
+            var controlContext = CastControl(match);
+            return dataContext.GetValue(controlContext);
         }
 
-        public void UpdateValue(Guid dataContextId, JToken? value)
+        public void UpdateValue(Guid controlContextId, JToken? value)
         {
-            var match = FindContextById(dataContextId);
-            var dataElement = CastControl(match);
-            dataContext.UpdateValue(dataElement, value);
+            var match = FindContextById(controlContextId);
+            var controlContext = CastControl(match);
+            dataContext.UpdateValue(controlContext, value);
             EnforceRules();
             notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
         }
@@ -106,10 +106,19 @@ namespace Orbyss.Components.JsonForms.Context
         {
             return dataContext.GetFormData();
         }
-
-        public string? GetDataContextError(Guid dataContextId)
+       
+        public void UpdateFormData(Action<JToken> updateDelegate)
         {
-            var match = FindContextById(dataContextId);
+            var data = dataContext.GetFormData();
+            updateDelegate(data);
+            EnforceRules();
+            Validate();
+            notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
+        }
+
+        public string? GetDataContextError(Guid controlContextId)
+        {
+            var match = FindContextById(controlContextId);
             if (match is FormListContext list && list.Errors.Any())
             {
                 return translationContext.TranslateErrors(ActiveLanguage, list.Errors, list.Interpretation);

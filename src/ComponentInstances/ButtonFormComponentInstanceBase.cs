@@ -48,14 +48,20 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
             }
         }
 
-        protected override IDictionary<string, object?> GetParametersCore()
+        protected virtual IDictionary<string, object?> GetButtonParameters()
         {
-            return new Dictionary<string, object?>
-            {
-                [nameof(Text)] = Text,
-                [nameof(Disabled)] = Disabled,
-                [nameof(OnClicked)] = OnClicked
-            };
+            return new Dictionary<string, object?>();
+        }
+
+        protected override sealed IDictionary<string, object?> GetParametersCore()
+        {
+            var result = GetButtonParameters();
+
+            result[nameof(Text)] = Text;
+            result[nameof(Disabled)] = Disabled;
+            result[nameof(OnClicked)] = OnClicked;
+
+            return result;
         }
     }
 }

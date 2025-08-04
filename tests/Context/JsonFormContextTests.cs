@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Orbyss.Components.JsonForms.Context.Models;
 using Orbyss.Components.JsonForms.Context.Notifications;
+using Orbyss.Components.JsonForms.Context.Translations;
 using Orbyss.Components.JsonForms.Context.Utils;
 
 namespace Orbyss.Components.JsonForms.Tests.Context
@@ -8,7 +9,7 @@ namespace Orbyss.Components.JsonForms.Tests.Context
     [TestFixture]
     public sealed class JsonFormContextTests
     {
-        private const string jsonSchema = "{\"properties\":{\"firstName\":{\"type\":\"string\"},\"surname\":{\"type\":\"string\"}}}";
+        private const string jsonSchema = "{\"properties\":{\"firstName\":{\"type\":\"string\", \"maxLength\": 6},\"surname\":{\"type\":\"string\"}}}";
         private const string translationSchema = "{\"resources\":{\"en\":{\"translation\":{\"firstName\":{\"label\":\"First Name\"}}},\"nl\":{\"translation\":{\"firstName\":{\"label\":\"Voornaam\"}}}}}";
         private const string uiSchema = "{\"type\":\"VerticalLayout\",\"elements\":[{\"type\":\"Control\",\"scope\":\"#/properties/firstName\",\"options\":{\"readonly\":true,\"disabled\":true}},{\"type\":\"Control\",\"scope\":\"#/properties/surname\",\"options\":{\"hidden\":true},\"rule\":{\"effect\":\"Show\",\"condition\":{\"scope\":\"#/properties/firstName\",\"schema\":{\"minLength\":2}}}}],\"options\":{\"customOption\":\"custom-option-value\"}}";
 
@@ -230,6 +231,44 @@ namespace Orbyss.Components.JsonForms.Tests.Context
 
             Assert.That($"{updatedFirstNameToken}", Is.EqualTo("Johannes"));
             Assert.That(surnameElement.Hidden, Is.False);
+        }
+
+        [Test]
+        public void When_UpdatFormData_Then_UpdatesContextToken_And_EnforcesRules_And_Validates()
+        {
+            // Arrange
+            var formData = new JObject
+            {
+                ["firstName"] = "H"
+            };
+
+            var initOptions = new JsonFormContextInitOptions(jsonSchema, uiSchema, translationSchema)
+            {
+                Data = formData
+            };
+            var sut = JsonFormContextBuilder.BuildAndInstantiate(initOptions);
+            var page = sut.GetPage(0);
+            var verticalLayout = (FormVerticalLayoutContext)page.ElementContexts[0];
+            var firstNameContext = verticalLayout.Rows.First(x => x.Interpretation.Label?.Label == "firstName");
+            var surnameElement = verticalLayout.Rows.First(x => x.Interpretation.Label?.Label == "surname");
+
+            sut.Validate();
+
+            // Pre-Assert
+            Assert.That(surnameElement.Hidden, Is.True);
+            var firstNameErrorText = sut.GetDataContextError(firstNameContext.Id);
+            Assert.That(firstNameErrorText, Is.Null.Or.Empty);
+
+            // Act
+            sut.UpdateFormData((formData) => formData["firstName"] = "Johannes");
+
+            // Assert
+            var updatedFirstNameToken = sut.GetValue(firstNameContext.Id);
+
+            Assert.That($"{updatedFirstNameToken}", Is.EqualTo("Johannes"));
+            Assert.That(surnameElement.Hidden, Is.False);
+            firstNameErrorText = sut.GetDataContextError(firstNameContext.Id);
+            Assert.That(firstNameErrorText, Is.EqualTo(DefaultJsonFormValidationMessages.MaxLength));
         }
     }
 }
