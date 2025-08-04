@@ -3,9 +3,9 @@ using Orbyss.Components.Json.Models;
 
 namespace Orbyss.Blazor.JsonForms.ComponentInstances
 {
-    public class DateTimeInputFormComponentInstance<TComponent> : DateInputFormComponentInstance<DateTime?>
+    public class DateTimeInputFormComponentInstance(Type componentGenericTypeDefinition) : DateInputFormComponentInstance<DateTime?>
     {
-        public override Type ComponentType => typeof(TComponent);
+        public override Type ComponentType => componentGenericTypeDefinition.MakeGenericType(typeof(DateTime?));
 
         protected override sealed Func<DateTime?, DateTime?>? ConvertFromDateTime => (dt) => dt;
 
@@ -18,9 +18,9 @@ namespace Orbyss.Blazor.JsonForms.ComponentInstances
                 : null;
         }
     }
-    public class DateOnlyInputFormComponentInstance<TComponent> : DateInputFormComponentInstance<DateOnly?>
+    public class DateOnlyInputFormComponentInstance(Type componentGenericTypeDefinition) : DateInputFormComponentInstance<DateOnly?>
     {
-        public override Type ComponentType => typeof(TComponent);
+        public override Type ComponentType => componentGenericTypeDefinition.MakeGenericType(typeof(DateOnly?));
 
         protected override sealed Func<DateTime?, DateOnly?>? ConvertFromDateTime => dt => dt.HasValue ? new DateOnly(dt.Value.Year, dt.Value.Month, dt.Value.Day) : null;
 
@@ -34,9 +34,9 @@ namespace Orbyss.Blazor.JsonForms.ComponentInstances
         }
     }
 
-    public class DateTimeUtcTicksInputFormComponentInstance<TComponent> : DateInputFormComponentInstance<DateTimeUtcTicks?>
+    public class DateTimeUtcTicksInputFormComponentInstance(Type componentGenericTypeDefinition) : DateInputFormComponentInstance<DateTimeUtcTicks?>
     {
-        public override Type ComponentType => typeof(TComponent);
+        public override Type ComponentType => componentGenericTypeDefinition.MakeGenericType(typeof(DateTimeUtcTicks?));
 
         protected override sealed Func<DateTime?, DateTimeUtcTicks?>? ConvertFromDateTime => dt => dt.HasValue ? new DateTimeUtcTicks(dt.Value.Ticks) : null;
 
@@ -54,9 +54,9 @@ namespace Orbyss.Blazor.JsonForms.ComponentInstances
     }
 
 
-    public class DateUtcTicksInputFormComponentInstance<TComponent> : DateInputFormComponentInstance<DateUtcTicks?>
+    public class DateUtcTicksInputFormComponentInstance(Type componentGenericTypeDefinition) : DateInputFormComponentInstance<DateUtcTicks?>
     {
-        public override Type ComponentType => typeof(TComponent);
+        public override Type ComponentType => componentGenericTypeDefinition.MakeGenericType(typeof(DateUtcTicks?));
 
         protected override sealed Func<DateTime?, DateUtcTicks?>? ConvertFromDateTime => dt => dt.HasValue ? new DateUtcTicks(dt.Value.Ticks) : null;
 
