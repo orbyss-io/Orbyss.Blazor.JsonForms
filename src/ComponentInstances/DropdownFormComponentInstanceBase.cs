@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Newtonsoft.Json.Linq;
 using Orbyss.Components.Json.Models;
 
 namespace Orbyss.Components.JsonForms.ComponentInstances
@@ -13,11 +13,17 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
 
         public IEnumerable<TranslatedEnumItem> Items { get; internal set; } = [];
 
-        public EventCallback<IEnumerable<string>> OnSelectedValuesChanged { get; internal set; }
+        protected override sealed object? ConvertValue(JToken? value)
+        {
+            if (MultiSelect)
+            {
+                return value?.ToObject<IEnumerable<string>>();
+            }
 
-        public EventCallback<string> OnValueChanged { get; internal set; }
+            return value?.ToString();
+        }
 
-        protected override IDictionary<string, object?> GetFormInputParameters()
+        protected override sealed IDictionary<string, object?> GetFormInputParameters()
         {
             var result = GetDropdownParameters();
 
@@ -26,8 +32,6 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
 
             result[nameof(MultiSelect)] = MultiSelect;
             result[nameof(Items)] = Items;
-            result[nameof(OnValueChanged)] = OnValueChanged;
-            result[nameof(OnSelectedValuesChanged)] = OnSelectedValuesChanged;
 
             return result;
         }

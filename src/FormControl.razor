@@ -126,24 +126,25 @@
 
     private IDictionary<string, object?> GetDropdownControlParameters(DropdownFormComponentInstanceBase dropdownInstance)
     {        
-        if(ControlContext!.Interpretation.ControlType == ControlType.EnumList)
+        dropdownInstance.Items = FormContext.GetTranslatedEnumItems(ControlContext!.Id);
+        dropdownInstance.MultiSelect = ControlContext!.Interpretation.ControlType == ControlType.EnumList;
+
+        var result = dropdownInstance.GetParameters();
+
+        if(dropdownInstance.MultiSelect)
         {
-            dropdownInstance.MultiSelect = true;
-            dropdownInstance.OnSelectedValuesChanged = new EventCallback<IEnumerable<string>>(
+            result[ComponentInstanceParameterKeys.OnValueChanged] = new EventCallback<IEnumerable<string>>(
                 this,
                 new Action<IEnumerable<string>>(OnValueChanged)
             );
         }
         else
-        {
-            dropdownInstance.MultiSelect = false;
-            dropdownInstance.OnValueChanged = new EventCallback<string>(
+        {            
+            result[ComponentInstanceParameterKeys.OnValueChanged] = new EventCallback<string>(
                 this,
                 new Action<string>(OnValueChanged)
             );
         }
-
-        dropdownInstance.Items = FormContext.GetTranslatedEnumItems(ControlContext.Id);
 
         return dropdownInstance.GetParameters();
     }

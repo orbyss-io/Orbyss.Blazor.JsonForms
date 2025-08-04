@@ -19,7 +19,7 @@ namespace Orbyss.Components.JsonForms.ComponentInstances
             this.text = text;
         }
 
-        public string? Language { get; internal set; }
+        internal string? Language { get; set; }
 
         public EventCallback? OnClicked { get; internal set; }
 
