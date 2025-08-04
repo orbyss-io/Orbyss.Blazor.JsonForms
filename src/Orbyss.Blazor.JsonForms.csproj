@@ -4,7 +4,36 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+
+
+		<!-- NuGet Metadata -->
+		<Title>Orbyss Blazor JsonForms</Title>
+		<Copyright>© 2025 Orbyss.io</Copyright>
 		<Version>0.0.1</Version>
+		<PackageId>Orbyss.Blazor.JsonForms</PackageId>
+		<Authors>Orbyss.io</Authors>
+		<Company>Orbyss</Company>
+		<Description>A fully .NET-native implementation of the JsonForms.io standard for schema-driven forms in Blazor.</Description>		
+		<PackageTags>
+			blazor;jsonforms;forms;jsonschema;schema;formgenerator;dynamicforms;webforms;formengine;ui;ui-framework;SchemaDriven
+		</PackageTags>
+
+		<RepositoryUrl>https://github.com/orbyss-io/Orbyss.Blazor.JsonForms</RepositoryUrl>
+		<!-- Optional -->
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<!-- or your actual license -->
+		<PackageProjectUrl>https://github.com/orbyss-io/Orbyss.Blazor.JsonForms</PackageProjectUrl>
+		<!-- Optional -->
+		<IncludeSymbols>true</IncludeSymbols>
+		<IncludeSource>true</IncludeSource>		
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryType>git</RepositoryType>
+		<PackageIcon>icon.png</PackageIcon>
+
+		<ReleaseNotes>
+			Initial release of the core JsonForms engine for Blazor
+		</ReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -14,6 +43,11 @@
 		<SupportedPlatform Include="android" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="" />
+		<None Include="icon.png" Pack="true" PackagePath="" />
+		<None Include="LICENSE" Pack="true" PackagePath="" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.18">

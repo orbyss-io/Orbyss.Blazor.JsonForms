@@ -19,9 +19,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Orbyss.Blazor.JsonForms\Orbyss.Blazor.JsonForms.csproj" />
+	  <ProjectReference Include="..\src\Orbyss.Blazor.JsonForms.csproj" />
 	</ItemGroup>
-
 
 	<ItemGroup>
 		<Using Include="NUnit.Framework" />
