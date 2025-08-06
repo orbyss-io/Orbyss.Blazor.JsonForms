@@ -121,20 +121,17 @@ else if (!string.IsNullOrWhiteSpace(HelperText))
 
 Add these standard parameters:
 ```csharp
-[Parameter] public string? Label { get; internal set; }
-[Parameter] public bool Disabled { get; internal set; }
-[Parameter] public bool ReadOnly { get; internal set; }
-[Parameter] public string? ErrorHelperText { get; internal set; }
-[Parameter] public string? HelperText { get; set; }
+[Parameter] public string? Label { get; set; } // Internally set
+[Parameter] public bool Disabled { get;  set; } // Internally set
+[Parameter] public bool ReadOnly { get; set; } // Internally set
+[Parameter] public string? ErrorHelperText { get; set; } // Internally set
 
-// Required: runtime error thrown when not specified
-[Parameter] public string Value { get; set; }
-// Required: runtime error thrown when not specified
-[Parameter] public EventCallback<string> ValueChanged { get; set; }
+[Parameter] public string Value { get; set; } // Required: runtime error thrown when not specified
+[Parameter] public EventCallback<string> ValueChanged { get; set; } // Required: runtime error thrown when not specified
 ```
-
 > ⚠️ If you forget to invoke ValueChanged, your input won’t update the form state!
-> ⚠️ The control types are fixed. You must return the right Value/ValueChanged<T> pair for each field type. See the table below.
+> 
+> ⚠️ The control types are fixed. You must define the correctly typed parameters T Value & ValueChanged<T> in your components based on the control your component is for. See the lookup below.
 
 ```csharp
 public static class ControlTypeLookup
