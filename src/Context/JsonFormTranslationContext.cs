@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
-using Orbyss.Components.Json.Models;
 using Orbyss.Blazor.JsonForms.Context.Interfaces;
 using Orbyss.Blazor.JsonForms.Context.Translations;
 using Orbyss.Blazor.JsonForms.Interpretation;
 using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 using Orbyss.Blazor.JsonForms.Utils;
+using Orbyss.Components.Json.Models;
+using System.Linq;
 using System.Text.Json;
 
 namespace Orbyss.Blazor.JsonForms.Context
@@ -190,7 +191,7 @@ namespace Orbyss.Blazor.JsonForms.Context
         {
             if (string.IsNullOrWhiteSpace(language))
             {
-                return null;
+                return translations.FirstOrDefault();
             }
 
             return translations.FirstOrDefault(x => x.Language.Equals(language, StringComparison.OrdinalIgnoreCase));

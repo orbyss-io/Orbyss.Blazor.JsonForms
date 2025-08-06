@@ -36,7 +36,7 @@ namespace Orbyss.Blazor.JsonForms.ComponentInstances
 
                 if (string.IsNullOrWhiteSpace(Language))
                 {
-                    return null;
+                    return translations?.FirstOrDefault().Value;
                 }
 
                 if (translations?.ContainsKey(Language) == true)
