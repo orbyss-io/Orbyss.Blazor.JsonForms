@@ -2,7 +2,8 @@
 
 **A fully .NET-native implementation of the [JsonForms.io](https://jsonforms.io) standard for schema-driven forms in Blazor.**  
 No Angular, no web components — just C#, JSON Schema, and flexible Blazor architecture.
-
+![NuGet](https://img.shields.io/nuget/v/Orbyss.Blazor.JsonForms)
+![NuGet Downloads](https://img.shields.io/nuget/dt/Orbyss.Blazor.JsonForms)
 ---
 
 ## 🎯 What is this?
