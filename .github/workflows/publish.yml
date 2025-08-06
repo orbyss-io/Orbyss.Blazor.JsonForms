@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,7 +29,9 @@ jobs:
 
   publish:
     needs: build-and-test
-    runs-on: windows-latest    
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set-version.outputs.version }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -44,12 +46,59 @@ jobs:
 
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
-      
-      - name: Pack NuGet package
-        run: dotnet pack src/Orbyss.Blazor.JsonForms.csproj --configuration Release --no-build
 
-      - name: Debug => List .nupkg files
-        run: ls -R src/bin/Release
+      - name: Extract version from tag
+        id: set-version
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "Using version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Push to NuGet.org
-        run: dotnet nuget push src/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      - name: Pack NuGet packages
+        run: |
+          VERSION=${{ steps.set-version.outputs.version }}
+          dotnet pack src/${{ github.event.repository.name }}.csproj \
+            --configuration Release \
+            --no-build \
+            -p:PackageVersion=$VERSION \
+            -p:IncludeSymbols=true \
+            -p:SymbolPackageFormat=snupkg
+
+      - name: Show packed files
+        run: ls -lh src/bin/Release
+
+      - name: Push packages to NuGet
+        run: |
+          for pkg in $(find src/bin/Release -name "*.nupkg"); do
+            echo "Pushing $pkg"
+            dotnet nuget push "$pkg" \
+              --api-key "${{ secrets.NUGET_API_KEY }}" \
+              --source https://api.nuget.org/v3/index.json \
+              --skip-duplicate
+          done
+
+      - name: Copy main .nupkg for release
+        run: |
+          mkdir package
+          cp $(find src/bin/Release -maxdepth 1 -name "*.nupkg" -not -name "*.symbols.nupkg") ./package/
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-package
+          path: package/*.nupkg
+
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download packaged artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-package
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          files: "*.nupkg"
