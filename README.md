@@ -109,9 +109,9 @@ Add these standard parameters:
 [Parameter] public string Value { get; set; } // Required: runtime error thrown when not specified
 [Parameter] public EventCallback<string> ValueChanged { get; set; } // Required: runtime error thrown when not specified
 ```
-
 > ⚠️ If you forget to invoke ValueChanged, your input won’t update the form state!
-> ⚠️ The control types are fixed. You must return the right Value/ValueChanged<T> pair for each field type. See the table below.
+> 
+> ⚠️ The control types are fixed. You must define the correctly typed parameters T Value & ValueChanged<T> in your components based on the control your component is for. See the lookup below.
 
 ```csharp
 public static class ControlTypeLookup
