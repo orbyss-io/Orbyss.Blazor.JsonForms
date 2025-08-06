@@ -14,7 +14,25 @@ This is the **UI-agnostic core framework** for rendering dynamic forms from JSON
 - Localization via translation schema
 - Layout, validation, and data management
 
-You plug in the **UI layer**. It’s like a form engine — and you bring the renderer.
+You plug in the **UI layer**, also called the 'FormComponentInstanceProvider'. This library is the form engine — and you must bring the renderer.
+
+With an implemented UI layer, you can render the JsonForms in your code as follows:
+
+```csharp
+<JsonForm InitOptions=@options/>
+
+@code{
+    JsonFormContextInitOptions options = new(
+        jsonSchema,
+        uiSchema,
+        translationSchema
+    );
+}
+```
+> ❗You can specify JsonFormContext as parameter, or as a **Transient Service** (DI)
+> ❗You can specify ComponentInstanceProvider as parameter, or as a DI service
+> ❗You can provide the following cascading values to your JsonForm: "Language, Disabled, ReadOnly".
+
 
 ---
 
@@ -71,6 +89,8 @@ Example of a GetInputField implementation:
      };
  }
 ```
+
+---
 
 ### 🧱 Step-by-Step Guide to Building a Custom Component
 #### ✅ 1. Create your Razor input component
@@ -216,6 +236,8 @@ public class MyCustomSwitchInstance : InputFormComponentInstance<MyCustomSwitch>
 > 💡 You can make use of (custom) options that you can configure in your UI Schema. See [jsonforms.io docs](https://jsonforms.io/docs/uischema/controls#options)
 
 
+---
+
 ## 🔄 How The Framework Works
 
 The framework generates forms using three different schemas:
@@ -311,6 +333,8 @@ Example:
 }
 ```
 
+---
+
 ## 📦 Installation
 ```bash
 dotnet add package Orbyss.Components.JsonForms
@@ -323,6 +347,29 @@ MIT License
 © Orbyss
 
 ## 🔗 Links
+- 🌍 **Website**: [https://orbyss.io](https://orbyss.io)
+- 📦 **NuGet**: [Orbyss.Blazor.JsonForms](https://www.nuget.org/packages/Orbyss.Blazor.JsonForms)
+- 🧑‍💻 **GitHub**: [https://github.com/Orbyss-io](https://github.com/orbyss-io)
+- 📝 **License**: [MIT](./LICENSE)
 - [JsonForms.io](https://jsonforms.io/)
 - [Syncfusion UI integration](https://www.nuget.org/packages/Orbyss.Blazor.Syncfusion.JsonForms)
 - [MudBlazor UI integration](https://www.nuget.org/packages/Orbyss.Blazor.MudBlazor.JsonForms)
+
+## 🤝 Contributing
+
+This project is open source and contributions are welcome!
+
+Whether it's bug fixes, improvements, documentation, or ideas — we encourage developers to get involved.  
+Just fork the repo, create a branch, and open a pull request.
+
+We follow standard .NET open-source conventions:
+- Write clean, readable code
+- Keep PRs focused and descriptive
+- Open issues for larger features or discussions
+
+No formal contribution guidelines — just be constructive and respectful.
+
+---
+
+
+⭐️ If you find this useful, [give us a star](https://github.com/orbyss-io/Orbyss.Blazor.JsonForms/stargazers) and help spread the word!
