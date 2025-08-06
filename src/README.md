@@ -106,7 +106,7 @@ Example of a GetInputField implementation:
            Placeholder="@Label"
            FloatLabelType="FloatLabelType.Always"
            ID="@id"
-           ValueChanged="@ValueChangedHandler"
+           ValueChanged="@OnValueChanged"
            ShowClearButton=@Clearable
            Width="@Width" />
 
@@ -132,11 +132,12 @@ Add these standard parameters:
 // Required: runtime error thrown when not specified
 [Parameter] public string Value { get; set; }
 // Required: runtime error thrown when not specified
-[Parameter] public EventCallback<string> ValueChanged { get; set; }
+[Parameter] public EventCallback<string> OnValueChanged { get; set; }
 ```
 
-> ⚠️ If you forget to invoke ValueChanged, your input won’t update the form state!
-> ⚠️ The control types are fixed. You must return the right Value/ValueChanged<T> pair for each field type. See the table below.
+> ⚠️ If you forget to invoke OnValueChanged, your input won’t update the form state!
+>
+> ⚠️ The control types are fixed. You must return the right Value/OnValueChanged<T> pair for each field type. See the table below.
 
 ```csharp
 public static class ControlTypeLookup
@@ -159,7 +160,7 @@ public static class ControlTypeLookup
 Example: If your schema field is "type": "integer", your component must have:
 ```csharp
 [Parameter] public int? Value { get; set; }
-[Parameter] public EventCallback<int?> ValueChanged { get; set; }
+[Parameter] public EventCallback<int?> OnValueChanged { get; set; }
 ```
 
 #### ✅ 2. Create a component instance class
