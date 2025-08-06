@@ -30,7 +30,9 @@ With an implemented UI layer, you can render the JsonForms in your code as follo
 }
 ```
 > ❗You can specify JsonFormContext as parameter, or as a **Transient Service** (DI)
+>
 > ❗You can specify ComponentInstanceProvider as parameter, or as a DI service
+>
 > ❗You can provide the following cascading values to your JsonForm: "Language, Disabled, ReadOnly".
 
 
