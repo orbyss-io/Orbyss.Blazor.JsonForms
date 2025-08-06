@@ -8,8 +8,7 @@
 
 		<!-- NuGet Metadata -->
 		<Title>Orbyss Blazor JsonForms</Title>
-		<Copyright>© 2025 Orbyss.io</Copyright>
-		<Version>1.0.0</Version>
+		<Copyright>© 2025 Orbyss.io</Copyright>		
 		<PackageId>Orbyss.Blazor.JsonForms</PackageId>
 		<Authors>Orbyss.io</Authors>
 		<Company>Orbyss</Company>
