@@ -45,8 +45,10 @@ jobs:
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
       
-      - name: Pack
-        run: dotnet pack --configuration Release --no-build
+      - name: Pack NuGet package
+        run: |
+          cd src
+          dotnet pack --configuration Release --no-build
 
       - name: Push to NuGet.org
         run: dotnet nuget push src/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
