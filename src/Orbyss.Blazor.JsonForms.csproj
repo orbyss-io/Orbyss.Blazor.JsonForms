@@ -9,7 +9,7 @@
 		<!-- NuGet Metadata -->
 		<Title>Orbyss Blazor JsonForms</Title>
 		<Copyright>© 2025 Orbyss.io</Copyright>
-		<Version>0.0.1</Version>
+		<Version>0.0.2</Version>
 		<PackageId>Orbyss.Blazor.JsonForms</PackageId>
 		<Authors>Orbyss.io</Authors>
 		<Company>Orbyss</Company>
@@ -32,7 +32,7 @@
 		<PackageIcon>icon.png</PackageIcon>
 
 		<ReleaseNotes>
-			Initial release of the core JsonForms engine for Blazor
+			Updated the readme files with extra examples
 		</ReleaseNotes>
 	</PropertyGroup>
 
