@@ -54,9 +54,6 @@ jobs:
           echo "Using version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Clean stale build outputs
-        run: rm -rf src/bin src/obj
-
       - name: Pack NuGet packages
         run: |
           VERSION=${{ steps.set-version.outputs.version }}

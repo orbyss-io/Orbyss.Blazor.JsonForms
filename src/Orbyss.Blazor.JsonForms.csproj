@@ -25,7 +25,6 @@
 		<!-- Optional -->
 		<IncludeSymbols>true</IncludeSymbols>
 		<IncludeSource>true</IncludeSource>		
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>git</RepositoryType>
 		<PackageIcon>icon.png</PackageIcon>
