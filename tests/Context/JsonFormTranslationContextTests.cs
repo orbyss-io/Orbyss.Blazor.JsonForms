@@ -135,7 +135,7 @@ namespace Orbyss.Blazor.JsonForms.Tests.Context
         }
 
         [Test]
-        public void When_TranslateLabel_ForControl_And_LanguageNull_Then_Returns_HumanReadablePropertyName()
+        public void When_TranslateLabel_ForControl_And_LanguageNull_Then_Returns_DefaultTranslation()
         {
             // Arrange
             var controlInterpretation = new UiSchemaControlInterpretation(
@@ -160,7 +160,7 @@ namespace Orbyss.Blazor.JsonForms.Tests.Context
             var result = sut.TranslateLabel(null, controlInterpretation);
 
             // Assert
-            Assert.That(result, Is.EqualTo("Street"));
+            Assert.That(result, Is.EqualTo("Street Test Label"));
         }
 
         [Test]
