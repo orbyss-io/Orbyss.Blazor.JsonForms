@@ -23,8 +23,6 @@
 		<!-- or your actual license -->
 		<PackageProjectUrl>https://github.com/orbyss-io/Orbyss.Blazor.JsonForms</PackageProjectUrl>
 		<!-- Optional -->
-		<IncludeSymbols>true</IncludeSymbols>
-		<IncludeSource>true</IncludeSource>		
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>git</RepositoryType>
 		<PackageIcon>icon.png</PackageIcon>

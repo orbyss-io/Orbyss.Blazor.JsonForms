@@ -60,6 +60,7 @@ jobs:
           dotnet pack src/${{ github.event.repository.name }}.csproj \
             --configuration Release \
             --no-build \
+            --skip-duplicate \
             -p:PackageVersion=$VERSION \
             -p:IncludeSymbols=true \
             -p:SymbolPackageFormat=snupkg
@@ -82,14 +83,3 @@ jobs:
               --api-key "${{ secrets.NUGET_API_KEY }}" \
               --source https://api.nuget.org/v3/index.json
           done
-
-      - name: Copy main .nupkg for release
-        run: |
-          mkdir package
-          cp $(find src/bin/Release -maxdepth 1 -name "*.nupkg" -not -name "*.symbols.nupkg") ./package/
-
-      - name: Upload package artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: nuget-package
-          path: package/*.nupkg
