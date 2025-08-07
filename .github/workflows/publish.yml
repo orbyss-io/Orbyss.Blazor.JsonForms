@@ -59,8 +59,7 @@ jobs:
           VERSION=${{ steps.set-version.outputs.version }}
           dotnet pack src/${{ github.event.repository.name }}.csproj \
             --configuration Release \
-            --no-build \
-            --skip-duplicate \
+            --no-build \            
             -p:PackageVersion=$VERSION \
             -p:IncludeSymbols=true \
             -p:SymbolPackageFormat=snupkg
@@ -74,12 +73,14 @@ jobs:
             echo "Pushing main package: $pkg"
             dotnet nuget push "$pkg" \
               --api-key "${{ secrets.NUGET_API_KEY }}" \
-              --source https://api.nuget.org/v3/index.json
+              --source https://api.nuget.org/v3/index.json \
+              --skip-duplicate
           done
 
           for symbols in $(find src/bin/Release -name "*.snupkg"); do
             echo "Pushing symbol package: $symbols"
             dotnet nuget push "$symbols" \
               --api-key "${{ secrets.NUGET_API_KEY }}" \
-              --source https://api.nuget.org/v3/index.json
+              --source https://api.nuget.org/v3/index.json \
+              --skip-duplicate
           done
