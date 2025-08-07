@@ -28,8 +28,9 @@
 		<PackageIcon>icon.png</PackageIcon>
 
 		<PackageReleaseNotes>
-			- Reorganized the Date/Time form component instances. 
-			- Added clearer exception handling in ControlTypeInterpreter
+			*Release: 8 August, 2025*
+			- Found minor bug in TranslationContext; when language was null, the property name for labels was returned right away. 
+			Now, we will first check if there are any translations, and only when there is not other option left will we return the property name
 		</PackageReleaseNotes>
 	</PropertyGroup>
 
