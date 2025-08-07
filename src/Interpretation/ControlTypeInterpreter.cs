@@ -11,7 +11,7 @@ namespace Orbyss.Blazor.JsonForms.Interpretation
         {
             var jsonSchemaToken = JToken.Parse($"{jsonSchema}");
             var schemaToken = jsonSchemaToken?.SelectToken(absoluteJsonSchemaPath, false)
-                ?? throw new InvalidSchemaTypeConfigurationException("Data schema is null");
+                ?? throw new InvalidSchemaTypeConfigurationException($"Data schema section for json schema path '{absoluteJsonSchemaPath}' cannot be found");
 
             var parentSchemaToken = !string.IsNullOrWhiteSpace(absoluteParentSchemaJsonPath)
                 ? jsonSchemaToken?.SelectToken(absoluteParentSchemaJsonPath, false)

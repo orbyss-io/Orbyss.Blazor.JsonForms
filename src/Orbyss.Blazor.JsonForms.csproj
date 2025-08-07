@@ -30,12 +30,10 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageIcon>icon.png</PackageIcon>
 
-		<ReleaseNotes>
-			Fixed some major bugs that existed due to major refactoring and first preview revision release.
-			1. Fixed a bug where the form would not render correctly if the schema was not valid.
-			2. Fixed bug of OnValueChanged parameter that was not passed to dropdowns
-			3. Translation context issues: now takes the default translation if the context is not configured with an active language
-		</ReleaseNotes>
+		<PackageReleaseNotes>
+			- Reorganized the Date/Time form component instances. 
+			- Added clearer exception handling in ControlTypeInterpreter
+		</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
