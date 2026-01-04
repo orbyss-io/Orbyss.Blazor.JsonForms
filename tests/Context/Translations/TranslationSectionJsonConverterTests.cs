@@ -1,5 +1,6 @@
 ﻿using Orbyss.Components.Json.Models;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Orbyss.Blazor.JsonForms.Tests.Context.Translations;
 
@@ -86,7 +87,8 @@ public class TranslationSectionJsonConverterTests
     {
         var result = new JsonSerializerOptions
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull | JsonIgnoreCondition.WhenWritingDefault
         };
         result.Converters.Add(new TranslationSectionJsonConverter());
         return result;
