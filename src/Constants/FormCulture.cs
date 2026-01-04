@@ -1,9 +1,8 @@
 ﻿using System.Globalization;
 
-namespace Orbyss.Blazor.JsonForms.Constants
+namespace Orbyss.Blazor.JsonForms.Constants;
+
+public static class FormCulture
 {
-    public static class FormCulture
-    {
-        public static CultureInfo Instance { get; set; } = new CultureInfo("en-US");
-    }
+    public static CultureInfo Instance { get; set; } = new CultureInfo("en-US");
 }

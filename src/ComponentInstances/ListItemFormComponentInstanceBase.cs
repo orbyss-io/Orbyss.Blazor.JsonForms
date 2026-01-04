@@ -1,26 +1,25 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace Orbyss.Blazor.JsonForms.ComponentInstances
+namespace Orbyss.Blazor.JsonForms.ComponentInstances;
+
+public abstract class ListItemFormComponentInstanceBase : FormComponentInstanceBase
 {
-    public abstract class ListItemFormComponentInstanceBase : FormComponentInstanceBase
+    public bool Disabled { get; internal set; }
+
+    public EventCallback OnRemoveItemClicked { get; internal set; }
+
+    protected override sealed IDictionary<string, object?> GetParametersCore()
     {
-        public bool Disabled { get; internal set; }
+        var result = GetListItemParameters();
 
-        public EventCallback OnRemoveItemClicked { get; internal set; }
+        result[nameof(Disabled)] = Disabled;
+        result[nameof(OnRemoveItemClicked)] = OnRemoveItemClicked;
 
-        protected override sealed IDictionary<string, object?> GetParametersCore()
-        {
-            var result = GetListItemParameters();
+        return result;
+    }
 
-            result[nameof(Disabled)] = Disabled;
-            result[nameof(OnRemoveItemClicked)] = OnRemoveItemClicked;
-
-            return result;
-        }
-
-        protected virtual IDictionary<string, object?> GetListItemParameters()
-        {
-            return new Dictionary<string, object?>();
-        }
+    protected virtual IDictionary<string, object?> GetListItemParameters()
+    {
+        return new Dictionary<string, object?>();
     }
 }

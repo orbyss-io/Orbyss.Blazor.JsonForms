@@ -1,21 +1,20 @@
-﻿namespace Orbyss.Blazor.JsonForms.Interpretation.Interfaces
+﻿namespace Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
+
+public interface IJsonPathInterpreter
 {
-    public interface IJsonPathInterpreter
-    {
-        string FromElementScope(string? scope);
+    string FromElementScope(string? scope);
 
-        string JoinJsonPaths(string left, string right);
+    string JoinJsonPaths(string left, string right);
 
-        string GetJsonPropertyNameFromPath(string path);
+    string GetJsonPropertyNameFromPath(string path);
 
-        string FromJsonSchemaPath(string path);
+    string FromJsonSchemaPath(string path);
 
-        string[] GetPathElements(string path);
+    string[] GetPathElements(string path);
 
-        string AddIndexToPath(string path, int index);
+    string AddIndexToPath(string path, int index);
 
-        string GetParentPathFromSchemaPath(string schemaPath);
+    string GetParentPathFromSchemaPath(string schemaPath);
 
-        string GetParentPathFromDataPath(string dataPath);
-    }
+    string GetParentPathFromDataPath(string dataPath);
 }

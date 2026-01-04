@@ -1,11 +1,10 @@
-﻿namespace Orbyss.Blazor.JsonForms.Interpretation
+﻿namespace Orbyss.Blazor.JsonForms.Interpretation;
+
+public enum UiSchemaElementInterpretationType
 {
-    public enum UiSchemaElementInterpretationType
-    {
-        VerticalLayout,
-        HorizontalLayout,
-        List,
-        ListDetails,
-        Control
-    }
+    VerticalLayout,
+    HorizontalLayout,
+    List,
+    ListDetails,
+    Control
 }

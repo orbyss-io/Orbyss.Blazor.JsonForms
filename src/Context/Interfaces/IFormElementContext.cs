@@ -1,26 +1,25 @@
 ﻿using Newtonsoft.Json.Linq;
 using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 
-namespace Orbyss.Blazor.JsonForms.Context.Interfaces
+namespace Orbyss.Blazor.JsonForms.Context.Interfaces;
+
+public interface IFormElementContext
 {
-    public interface IFormElementContext
-    {
-        Guid Id { get; }
+    Guid Id { get; }
 
-        bool Validate(JToken formData, JToken schema);
+    bool Validate(JToken formData, JToken schema);
 
-        IUiSchemaElementInterpretation Interpretation { get; }
+    IUiSchemaElementInterpretation Interpretation { get; }
 
-        bool FindDataPathBySchemaPath(string schemaPath, out string dataPath);
+    bool FindDataPathBySchemaPath(string schemaPath, out string dataPath);
 
-        bool Disabled { get; }
+    bool Disabled { get; }
 
-        bool ReadOnly { get; }
+    bool ReadOnly { get; }
 
-        bool Hidden { get; }
+    bool Hidden { get; }
 
-        void SetHidden(bool? value);
+    void SetHidden(bool? value);
 
-        void SetDisabled(bool? value);
-    }
+    void SetDisabled(bool? value);
 }

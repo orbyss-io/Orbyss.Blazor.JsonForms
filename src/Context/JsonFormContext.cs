@@ -1,267 +1,269 @@
 ﻿using Newtonsoft.Json.Linq;
-using Orbyss.Components.Json.Models;
 using Orbyss.Blazor.JsonForms.Context.Interfaces;
 using Orbyss.Blazor.JsonForms.Context.Models;
 using Orbyss.Blazor.JsonForms.Context.Notifications;
 using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 using Orbyss.Blazor.JsonForms.Utils;
+using Orbyss.Components.Json.Models;
 
-namespace Orbyss.Blazor.JsonForms.Context
+namespace Orbyss.Blazor.JsonForms.Context;
+
+public sealed class JsonFormContext(
+    IJsonFormNotificationHandler notificationHandler,
+    IJsonFormDataContext dataContext,
+    IJsonFormTranslationContext translationContext,
+    IFormUiSchemaInterpreter uiSchemaInterpreter,
+    IFormElementContextFactory elementContextFactory,
+    IFormRuleEnforcer ruleEnforcer
+)
+    : IJsonFormContext
 {
-    public sealed class JsonFormContext(
-        IJsonFormNotificationHandler notificationHandler,
-        IJsonFormDataContext dataContext,
-        IJsonFormTranslationContext translationContext,
-        IFormUiSchemaInterpreter uiSchemaInterpreter,
-        IFormElementContextFactory elementContextFactory,
-        IFormRuleEnforcer ruleEnforcer
-    )
-        : IJsonFormContext
+    private FormPageContext[] pages = [];
+    private string? activeLanguage;
+    private JObject options = [];
+
+    private bool disabled;
+    private bool readOnly;
+
+    public IEnumerable<FormPageContext> GetPages()
     {
-        private FormPageContext[] pages = [];
-        private string? activeLanguage;
-        private JObject options = [];
+        return pages;
+    }
 
-        private bool disabled;
-        private bool readOnly;
+    public string? ActiveLanguage => activeLanguage;
 
-        public IEnumerable<FormPageContext> GetPages() => pages;
+    public IJsonFormNotification FormNotification => notificationHandler;
 
-        public string? ActiveLanguage => activeLanguage;
+    public int PageCount => pages.Length;
 
-        public IJsonFormNotification FormNotification => notificationHandler;
+    public bool Disabled => disabled;
 
-        public int PageCount => pages.Length;
+    public bool ReadOnly => readOnly;
 
-        public bool Disabled => disabled;
-
-        public bool ReadOnly => readOnly;
-
-        public void Instantiate(JsonFormContextInitOptions initOptions)
+    public void Instantiate(JsonFormContextInitOptions initOptions)
+    {
+        if (pages.Length > 0)
         {
-            if (pages.Length > 0)
-            {
-                throw new InvalidOperationException("Context is already instantiated");
-            }
-
-            var data = initOptions.Data ?? new JObject();
-            var dataSchema = initOptions.DataSchema;
-            var translationSchema = initOptions.TranslationSchema;
-            var uiSchema = initOptions.UiSchema;
-
-            dataContext.Instantiate(data, dataSchema);
-            translationContext.Instantiate(translationSchema, dataSchema);
-
-            disabled = initOptions.Disabled;
-            activeLanguage = initOptions.Language;
-            readOnly = initOptions.ReadOnly;
-
-            var uiSchemaInterpretation = uiSchemaInterpreter.Interpret(uiSchema, dataSchema);
-            options = uiSchema.Options?.ToJToken() as JObject ?? [];
-            pages = elementContextFactory.CreatePages(uiSchemaInterpretation.Pages);
-
-            EnforceRules();
+            throw new InvalidOperationException("Context is already instantiated");
         }
 
-        public JToken? GetFormOption(string key)
-        {
-            if (options.ContainsKey(key))
-            {
-                return options[key];
-            }
+        var data = initOptions.Data ?? new JObject();
+        var dataSchema = initOptions.DataSchema;
+        var translationSchema = initOptions.TranslationSchema;
+        var uiSchema = initOptions.UiSchema;
 
-            return null;
+        dataContext.Instantiate(data, dataSchema);
+        translationContext.Instantiate(translationSchema, dataSchema);
+
+        disabled = initOptions.Disabled;
+        activeLanguage = initOptions.Language;
+        readOnly = initOptions.ReadOnly;
+
+        var uiSchemaInterpretation = uiSchemaInterpreter.Interpret(uiSchema, dataSchema);
+        options = uiSchema.Options?.ToJToken() as JObject ?? [];
+        pages = elementContextFactory.CreatePages(uiSchemaInterpretation.Pages);
+
+        EnforceRules();
+    }
+
+    public JToken? GetFormOption(string key)
+    {
+        if (options.ContainsKey(key))
+        {
+            return options[key];
         }
 
-        public bool Validate(Guid? pageId = null)
+        return null;
+    }
+
+    public bool Validate(Guid? pageId = null)
+    {
+        var contextsToValidate = pageId.HasValue
+            ? pages.FirstOrDefault(x => x.Id == pageId.Value)?.ElementContexts ?? throw new InvalidOperationException($"Page with id '{pageId}' does not exist")
+            : pages.SelectMany(x => x.ElementContexts);
+
+        var result = dataContext.Validate(contextsToValidate);
+
+        notificationHandler.Notify(JsonFormNotificationType.OnDataValidated);
+
+        return result;
+    }
+
+    public JToken? GetValue(Guid controlContextId)
+    {
+        var match = FindContextById(controlContextId);
+        var controlContext = CastControl(match);
+        return dataContext.GetValue(controlContext);
+    }
+
+    public void UpdateValue(Guid controlContextId, JToken? value)
+    {
+        var match = FindContextById(controlContextId);
+        var controlContext = CastControl(match);
+        dataContext.UpdateValue(controlContext, value);
+        EnforceRules();
+        notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
+    }
+
+    public JToken GetFormData()
+    {
+        return dataContext.GetFormData();
+    }
+
+    public void UpdateFormData(Action<JToken> updateDelegate)
+    {
+        var data = dataContext.GetFormData();
+        updateDelegate(data);
+        EnforceRules();
+        Validate();
+        notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
+    }
+
+    public string? GetDataContextError(Guid controlContextId)
+    {
+        var match = FindContextById(controlContextId);
+        if (match is FormListContext list && list.Errors.Any())
         {
-            var contextsToValidate = pageId.HasValue
-                ? pages.FirstOrDefault(x => x.Id == pageId.Value)?.ElementContexts ?? throw new InvalidOperationException($"Page with id '{pageId}' does not exist")
-                : pages.SelectMany(x => x.ElementContexts);
-
-            var result = dataContext.Validate(contextsToValidate);
-
-            notificationHandler.Notify(JsonFormNotificationType.OnDataValidated);
-
-            return result;
+            return translationContext.TranslateErrors(ActiveLanguage, list.Errors, list.Interpretation);
         }
 
-        public JToken? GetValue(Guid controlContextId)
+        if (match is FormControlContext control && control.Errors.Any())
         {
-            var match = FindContextById(controlContextId);
-            var controlContext = CastControl(match);
-            return dataContext.GetValue(controlContext);
+            return translationContext.TranslateErrors(ActiveLanguage, control.Errors, control.Interpretation);
         }
 
-        public void UpdateValue(Guid controlContextId, JToken? value)
+        return null;
+    }
+
+    public string? GetLabel(Guid contextId)
+    {
+        var page = pages.FirstOrDefault(x => x.Id == contextId);
+        if (page is not null)
         {
-            var match = FindContextById(controlContextId);
-            var controlContext = CastControl(match);
-            dataContext.UpdateValue(controlContext, value);
-            EnforceRules();
-            notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
+            if (page.LabelInterpretation is null)
+                return string.Empty;
+
+            return translationContext.TranslateLabel(
+                ActiveLanguage,
+                page.LabelInterpretation
+            );
         }
 
-        public JToken GetFormData()
+        var match = FindContextById(contextId);
+        if (match is FormControlContext control)
+            return translationContext.TranslateLabel(ActiveLanguage, control.Interpretation);
+        if (match is FormListContext list)
+            return translationContext.TranslateLabel(ActiveLanguage, list.Interpretation);
+        if (match is IFormElementContext context && context.Interpretation.Label is not null)
+            return translationContext.TranslateLabel(ActiveLanguage, context.Interpretation.Label);
+
+        throw new ArgumentException($"Could not get the translated label for context '{match.Id}'");
+    }
+
+    public IEnumerable<TranslatedEnumItem> GetTranslatedEnumItems(Guid controlContextId)
+    {
+        var match = FindContextById(controlContextId);
+        var controlContext = CastControl(match);
+
+        return translationContext
+            .TranslateEnum(ActiveLanguage, controlContext.Interpretation) ?? [];
+    }
+
+    public FormPageContext GetPage(int index)
+    {
+        return pages[index];
+    }
+
+    public void InstantiateList(Guid listContextId)
+    {
+        var listMatch = FindContextById(listContextId);
+        var listContext = CastList(listMatch);
+        dataContext.InstantiateList(listContext);
+    }
+
+    public void AddListItem(Guid listContextId)
+    {
+        var match = FindContextById(listContextId);
+        var listContext = CastList(match);
+        dataContext.AddListItem(listContext);
+        notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
+    }
+
+    public void RemoveListItem(Guid listContextId, Guid listItemContextId)
+    {
+        var listMatch = FindContextById(listContextId);
+        var listItemMatch = FindContextById(listItemContextId);
+
+        var listContext = CastList(listMatch);
+        dataContext.RemoveListItem(listContext, listItemMatch);
+        notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
+    }
+
+    public void ChangeLanguage(string language)
+    {
+        Validate();
+        activeLanguage = language;
+        notificationHandler.Notify(JsonFormNotificationType.OnLanguageChanged);
+    }
+
+    public void ChangeDisabled(bool disabled)
+    {
+        this.disabled = disabled;
+        notificationHandler.Notify(JsonFormNotificationType.OnDisabledChanged);
+    }
+
+    public void ChangeReadOnly(bool readOnly)
+    {
+        this.readOnly = readOnly;
+        notificationHandler.Notify(JsonFormNotificationType.OnReadOnlyChanged);
+    }
+
+    private static FormControlContext CastControl(IFormElementContext context)
+    {
+        return context as FormControlContext
+            ?? throw new InvalidCastException($"Context of type '{context.GetType()}' could not be cast to type '{typeof(FormControlContext)}'");
+    }
+
+    private static FormListContext CastList(IFormElementContext context)
+    {
+        return context as FormListContext
+            ?? throw new InvalidCastException($"Context of type '{context.GetType()}' could not be cast to type '{typeof(FormListContext)}'");
+    }
+
+    private void EnforceRules()
+    {
+        var rootContexts = GetAllRootElementContexts();
+        for (var j = 0; j < rootContexts.Length; j++)
         {
-            return dataContext.GetFormData();
-        }
-       
-        public void UpdateFormData(Action<JToken> updateDelegate)
-        {
-            var data = dataContext.GetFormData();
-            updateDelegate(data);
-            EnforceRules();
-            Validate();
-            notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
-        }
-
-        public string? GetDataContextError(Guid controlContextId)
-        {
-            var match = FindContextById(controlContextId);
-            if (match is FormListContext list && list.Errors.Any())
-            {
-                return translationContext.TranslateErrors(ActiveLanguage, list.Errors, list.Interpretation);
-            }
-
-            if (match is FormControlContext control && control.Errors.Any())
-            {
-                return translationContext.TranslateErrors(ActiveLanguage, control.Errors, control.Interpretation);
-            }
-
-            return null;
-        }
-
-        public string? GetLabel(Guid contextId)
-        {
-            var page = pages.FirstOrDefault(x => x.Id == contextId);
-            if (page is not null)
-            {
-                if (page.LabelInterpretation is null)
-                    return string.Empty;
-
-                return translationContext.TranslateLabel(
-                    ActiveLanguage,
-                    page.LabelInterpretation
-                );
-            }
-
-            var match = FindContextById(contextId);
-            if (match is FormControlContext control)
-                return translationContext.TranslateLabel(ActiveLanguage, control.Interpretation);
-            if (match is FormListContext list)
-                return translationContext.TranslateLabel(ActiveLanguage, list.Interpretation);
-            if (match is IFormElementContext context && context.Interpretation.Label is not null)
-                return translationContext.TranslateLabel(ActiveLanguage, context.Interpretation.Label);
-
-            throw new ArgumentException($"Could not get the translated label for context '{match.Id}'");
-        }
-
-        public IEnumerable<TranslatedEnumItem> GetTranslatedEnumItems(Guid controlContextId)
-        {
-            var match = FindContextById(controlContextId);
-            var controlContext = CastControl(match);
-
-            return translationContext
-                .TranslateEnum(ActiveLanguage, controlContext.Interpretation) ?? [];
-        }
-
-        public FormPageContext GetPage(int index)
-        {
-            return pages[index];
-        }
-
-        public void InstantiateList(Guid listContextId)
-        {
-            var listMatch = FindContextById(listContextId);
-            var listContext = CastList(listMatch);
-            dataContext.InstantiateList(listContext);
-        }
-
-        public void AddListItem(Guid listContextId)
-        {
-            var match = FindContextById(listContextId);
-            var listContext = CastList(match);
-            dataContext.AddListItem(listContext);
-            notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
-        }
-
-        public void RemoveListItem(Guid listContextId, Guid listItemContextId)
-        {
-            var listMatch = FindContextById(listContextId);
-            var listItemMatch = FindContextById(listItemContextId);
-
-            var listContext = CastList(listMatch);
-            dataContext.RemoveListItem(listContext, listItemMatch);
-            notificationHandler.Notify(JsonFormNotificationType.OnDataChanged);
+            var context = rootContexts[j];
+            ruleEnforcer.EnforceRule(dataContext, context, rootContexts);
         }
 
-        public void ChangeLanguage(string language)
+        ruleEnforcer.EnforceRulesForPages(dataContext, pages, rootContexts);
+    }
+
+    private IFormElementContext[] GetAllRootElementContexts()
+    {
+        var result = new List<IFormElementContext>();
+
+        for (var i = 0; i < pages.Length; i++)
         {
-            Validate();
-            activeLanguage = language;
-            notificationHandler.Notify(JsonFormNotificationType.OnLanguageChanged);
+            var page = pages[i];
+            result.AddRange(page.ElementContexts);
         }
 
-        public void ChangeDisabled(bool disabled)
+        return [.. result];
+    }
+
+    private IFormElementContext FindContextById(Guid id)
+    {
+        foreach (var page in pages)
         {
-            this.disabled = disabled;
-            notificationHandler.Notify(JsonFormNotificationType.OnDisabledChanged);
+            var result = page.FindContextById(id);
+            if (result is not null)
+                return result;
         }
 
-        public void ChangeReadOnly(bool readOnly)
-        {
-            this.readOnly = readOnly;
-            notificationHandler.Notify(JsonFormNotificationType.OnReadOnlyChanged);
-        }
-
-        private static FormControlContext CastControl(IFormElementContext context)
-        {
-            return context as FormControlContext
-                ?? throw new InvalidCastException($"Context of type '{context.GetType()}' could not be cast to type '{typeof(FormControlContext)}'");
-        }
-
-        private static FormListContext CastList(IFormElementContext context)
-        {
-            return context as FormListContext
-                ?? throw new InvalidCastException($"Context of type '{context.GetType()}' could not be cast to type '{typeof(FormListContext)}'");
-        }
-
-        private void EnforceRules()
-        {
-            var rootContexts = GetAllRootElementContexts();
-            for (var j = 0; j < rootContexts.Length; j++)
-            {
-                var context = rootContexts[j];
-                ruleEnforcer.EnforceRule(dataContext, context, rootContexts);
-            }
-
-            ruleEnforcer.EnforceRulesForPages(dataContext, pages, rootContexts);
-        }
-
-        private IFormElementContext[] GetAllRootElementContexts()
-        {
-            var result = new List<IFormElementContext>();
-
-            for (var i = 0; i < pages.Length; i++)
-            {
-                var page = pages[i];
-                result.AddRange(page.ElementContexts);
-            }
-
-            return [.. result];
-        }
-
-        private IFormElementContext FindContextById(Guid id)
-        {
-            foreach (var page in pages)
-            {
-                var result = page.FindContextById(id);
-                if (result is not null)
-                    return result;
-            }
-
-            throw new InvalidOperationException($"Could not find context by id '{id}'");
-        }
+        throw new InvalidOperationException($"Could not find context by id '{id}'");
     }
 }

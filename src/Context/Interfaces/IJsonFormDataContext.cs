@@ -2,26 +2,25 @@
 using Newtonsoft.Json.Schema;
 using Orbyss.Blazor.JsonForms.Context.Models;
 
-namespace Orbyss.Blazor.JsonForms.Context.Interfaces
+namespace Orbyss.Blazor.JsonForms.Context.Interfaces;
+
+public interface IJsonFormDataContext
 {
-    public interface IJsonFormDataContext
-    {
-        JSchema GetJsonSchema();
+    JSchema GetJsonSchema();
 
-        void Instantiate(JToken formData, JSchema dataSchema);
+    void Instantiate(JToken formData, JSchema dataSchema);
 
-        bool Validate(IEnumerable<IFormElementContext> contexts);
+    bool Validate(IEnumerable<IFormElementContext> contexts);
 
-        JToken? GetValue(FormControlContext formControlContext);
+    JToken? GetValue(FormControlContext formControlContext);
 
-        void UpdateValue(FormControlContext formControlContext, JToken? value);
+    void UpdateValue(FormControlContext formControlContext, JToken? value);
 
-        JToken GetFormData();
+    JToken GetFormData();
 
-        void AddListItem(FormListContext listContext);
+    void AddListItem(FormListContext listContext);
 
-        void RemoveListItem(FormListContext listContext, IFormElementContext listItemContext);
+    void RemoveListItem(FormListContext listContext, IFormElementContext listItemContext);
 
-        void InstantiateList(FormListContext listContext);
-    }
+    void InstantiateList(FormListContext listContext);
 }

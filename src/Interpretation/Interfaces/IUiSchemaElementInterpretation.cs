@@ -1,9 +1,8 @@
-﻿namespace Orbyss.Blazor.JsonForms.Interpretation.Interfaces
-{
-    public interface IUiSchemaElementInterpretation
-    {
-        UiSchemaLabelInterpretation? Label { get; }
+﻿namespace Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 
-        UiSchemaElementInterpretationType ElementType { get; }
-    }
+public interface IUiSchemaElementInterpretation
+{
+    UiSchemaLabelInterpretation? Label { get; }
+
+    UiSchemaElementInterpretationType ElementType { get; }
 }

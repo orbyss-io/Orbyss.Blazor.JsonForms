@@ -1,13 +1,12 @@
-﻿namespace Orbyss.Blazor.JsonForms.Constants
+﻿namespace Orbyss.Blazor.JsonForms.Constants;
+
+public static class FormUiSchemaOptionKeys
 {
-    public static class FormUiSchemaOptionKeys
-    {
-        public const string Detail = "detail";
+    public const string Detail = "detail";
 
-        public const string ReadOnly = "readonly";
+    public const string ReadOnly = "readonly";
 
-        public const string Disabled = "disabled";
+    public const string Disabled = "disabled";
 
-        public const string Hidden = "hidden";
-    }
+    public const string Hidden = "hidden";
 }

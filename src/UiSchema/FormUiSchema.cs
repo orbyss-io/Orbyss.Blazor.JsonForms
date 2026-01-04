@@ -3,23 +3,22 @@ using Newtonsoft.Json.Linq;
 using Orbyss.Blazor.JsonForms.Utils;
 using System.Text.Json.Serialization;
 
-namespace Orbyss.Blazor.JsonForms.UiSchema
-{
-    public sealed record FormUiSchema(
-        [property: JsonProperty, JsonPropertyName("type")] UiSchemaElementType Type,
-        [property: JsonProperty, JsonPropertyName("scope")] string? Scope,
-        [property: JsonProperty, JsonPropertyName("label")] string? Label,
-        [property: JsonProperty, JsonPropertyName("elements")] FormUiSchemaElement[] Elements,
-        [property: JsonProperty, JsonPropertyName("options")] object? Options)
-    {
-        public bool HasOption(string key)
-        {
-            return OptionsReader.HasOption(Options, key);
-        }
+namespace Orbyss.Blazor.JsonForms.UiSchema;
 
-        public JToken GetOption(string key)
-        {
-            return OptionsReader.GetOption(Options, key);
-        }
+public sealed record FormUiSchema(
+    [property: JsonProperty, JsonPropertyName("type")] UiSchemaElementType Type,
+    [property: JsonProperty, JsonPropertyName("scope")] string? Scope,
+    [property: JsonProperty, JsonPropertyName("label")] string? Label,
+    [property: JsonProperty, JsonPropertyName("elements")] FormUiSchemaElement[] Elements,
+    [property: JsonProperty, JsonPropertyName("options")] object? Options)
+{
+    public bool HasOption(string key)
+    {
+        return OptionsReader.HasOption(Options, key);
+    }
+
+    public JToken GetOption(string key)
+    {
+        return OptionsReader.GetOption(Options, key);
     }
 }

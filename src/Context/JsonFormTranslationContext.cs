@@ -1,225 +1,225 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Orbyss.Blazor.JsonForms.Context.Interfaces;
-using Orbyss.Blazor.JsonForms.Context.Translations;
+using Orbyss.Blazor.JsonForms.Extensions;
 using Orbyss.Blazor.JsonForms.Interpretation;
 using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 using Orbyss.Blazor.JsonForms.Utils;
 using Orbyss.Components.Json.Models;
 using System.Text.Json;
 
-namespace Orbyss.Blazor.JsonForms.Context
+namespace Orbyss.Blazor.JsonForms.Context;
+
+public sealed class JsonFormTranslationContext(IJsonPathInterpreter jsonPathInterpreter)
+    : IJsonFormTranslationContext
 {
-    public sealed class JsonFormTranslationContext(IJsonPathInterpreter jsonPathInterpreter)
-        : IJsonFormTranslationContext
+    private static readonly JsonSerializerOptions serializerOptions = GetSerializerOptions();
+
+    private TranslationObject[] translations = [];
+    private JObject schema = [];
+
+    public void Instantiate(TranslationSchema translationSchema, JSchema dataSchema)
     {
-        private static readonly JsonSerializerOptions serializerOptions = GetSerializerOptions();
-
-        private TranslationObject[] translations = [];
-        private JObject schema = [];
-
-        public void Instantiate(TranslationSchema translationSchema, JSchema dataSchema)
+        if (translations?.Length > 0)
         {
-            if (translations?.Length > 0)
-            {
-                throw new InvalidOperationException("Translation context is already instantiated.");
-            }
-
-            translations = [.. ConvertToTranslationObjects(translationSchema)];
-
-            schema = JObject.Parse(dataSchema.ToString());
+            throw new InvalidOperationException("Translation context is already instantiated.");
         }
 
-        public string TranslateErrors(string? language, IEnumerable<ErrorType> errors, UiSchemaControlInterpretationBase controlInterpretation)
+        translations = [.. ConvertToTranslationObjects(translationSchema)];
+
+        schema = JObject.Parse(dataSchema.ToString());
+    }
+
+    public string TranslateErrors(string? language, IEnumerable<ErrorType> errors, UiSchemaControlInterpretationBase controlInterpretation)
+    {
+        var translation = GetTranslationObject(language);
+        var errorSection = TranslationErrorSection.DefaultSection();
+
+        if (translation is not null)
         {
-            var translation = GetTranslationObject(language);
-            var errorSection = TranslationErrorSection.DefaultSection();
-
-            if (translation is not null)
-            {
-                var translationSectionPath = jsonPathInterpreter.FromJsonSchemaPath(controlInterpretation.AbsoluteSchemaJsonPath);
-                var translationSection = GetSectionByPath(translation, translationSectionPath);
-                if (translationSection?.Error is not null)
-                {
-                    errorSection = translationSection.Error;
-                }
-            }
-
-            var translatedError = errors
-                .Select(errorSection.GetValue)
-                .ToArray();
-
-            return string.Join(". ", translatedError).Replace("..", ".");
-        }
-
-        public string? TranslateLabel(string? language, UiSchemaLabelInterpretation labelInterpretation)
-        {
-            return TranslateLabel(language, labelInterpretation, null);
-        }
-
-        public string? TranslateLabel(string? language, UiSchemaControlInterpretationBase controlInterpretation)
-        {
-            return TranslateLabel(language, controlInterpretation.Label, controlInterpretation.AbsoluteSchemaJsonPath);
-        }
-
-        public IEnumerable<TranslatedEnumItem>? TranslateEnum(string? language, UiSchemaControlInterpretation controlInterpretation)
-        {
-            var translation = GetTranslationObject(language);
-            if (translation is null)
-            {
-                return GetDefaultTranslatedEnumItems(controlInterpretation.AbsoluteSchemaJsonPath);
-            }
-
             var translationSectionPath = jsonPathInterpreter.FromJsonSchemaPath(controlInterpretation.AbsoluteSchemaJsonPath);
             var translationSection = GetSectionByPath(translation, translationSectionPath);
-
-            if (translationSection?.Enums?.Any() == true)
+            if (translationSection?.Error is not null)
             {
-                return translationSection.Enums;
+                errorSection = translationSection.Error;
             }
+        }
 
+        var translatedErrors = errorSection.GetTranslatedErrors(errors);
+        if (errors.Any() && !translatedErrors.Any())
+            translatedErrors = [errorSection.GetDefault()];
+
+        return string.Join(". ", translatedErrors).Replace("..", ".");
+    }
+
+    
+
+    public string? TranslateLabel(string? language, UiSchemaLabelInterpretation labelInterpretation)
+    {
+        return TranslateLabel(language, labelInterpretation, null);
+    }
+
+    public string? TranslateLabel(string? language, UiSchemaControlInterpretationBase controlInterpretation)
+    {
+        return TranslateLabel(language, controlInterpretation.Label, controlInterpretation.AbsoluteSchemaJsonPath);
+    }
+
+    public IEnumerable<TranslatedEnumItem>? TranslateEnum(string? language, UiSchemaControlInterpretation controlInterpretation)
+    {
+        var translation = GetTranslationObject(language);
+        if (translation is null)
+        {
             return GetDefaultTranslatedEnumItems(controlInterpretation.AbsoluteSchemaJsonPath);
         }
 
-        private IEnumerable<TranslatedEnumItem>? GetDefaultTranslatedEnumItems(string absoluteSchemaJsonPath)
-        {
-            var enumSchemaSection = schema.SelectToken(absoluteSchemaJsonPath);
-            if (enumSchemaSection is null
-                || enumSchemaSection is not JObject enumSchemaObject
-                || !enumSchemaObject.ContainsKey("enum")
-                || enumSchemaObject["enum"] is not JArray enumArray)
-            {
-                return null;
-            }
+        var translationSectionPath = jsonPathInterpreter.FromJsonSchemaPath(controlInterpretation.AbsoluteSchemaJsonPath);
+        var translationSection = GetSectionByPath(translation, translationSectionPath);
 
-            return enumArray.Select(x =>
-            {
-                return new TranslatedEnumItem($"{x}", $"{x}");
-            });
+        if (translationSection?.Enums?.Any() == true)
+        {
+            return translationSection.Enums;
         }
 
-        private string? TranslateLabel(string? language, UiSchemaLabelInterpretation? labelInterpretation, string? absoluteSchemaPath)
+        return GetDefaultTranslatedEnumItems(controlInterpretation.AbsoluteSchemaJsonPath);
+    }
+
+    private IEnumerable<TranslatedEnumItem>? GetDefaultTranslatedEnumItems(string absoluteSchemaJsonPath)
+    {
+        var enumSchemaSection = schema.SelectToken(absoluteSchemaJsonPath);
+        if (enumSchemaSection is null
+            || enumSchemaSection is not JObject enumSchemaObject
+            || !enumSchemaObject.ContainsKey("enum")
+            || enumSchemaObject["enum"] is not JArray enumArray)
         {
-            var propertyName = !string.IsNullOrWhiteSpace(absoluteSchemaPath)
-               ? jsonPathInterpreter.GetJsonPropertyNameFromPath(absoluteSchemaPath)
-               : string.Empty;
-
-            var translation = GetTranslationObject(language);
-
-            if (translation is null)
-            {
-                return propertyName.ToHumanReadableName();
-            }
-
-            if (!string.IsNullOrWhiteSpace(labelInterpretation?.I18n)
-                 && translation.Sections.TryGetValue(labelInterpretation.I18n, out var i18nSection))
-            {
-                return i18nSection.Label;
-            }
-
-            if (!string.IsNullOrWhiteSpace(labelInterpretation?.Label)
-                && propertyName != labelInterpretation.Label
-                && translation.Sections.TryGetValue(labelInterpretation.Label, out var simpleLabelSection))
-            {
-                return simpleLabelSection.Label;
-            }
-
-            if (string.IsNullOrWhiteSpace(absoluteSchemaPath))
-            {
-                return null;
-            }
-
-            var translationSectionPath = jsonPathInterpreter.FromJsonSchemaPath(absoluteSchemaPath);
-            var translationSection = GetSectionByPath(translation, translationSectionPath);
-            if (translationSection is not null)
-            {
-                return translationSection.Label;
-            }
-
-            return propertyName?.ToHumanReadableName();
+            return null;
         }
 
-        private TranslationSection? GetSectionByPath(TranslationObject translation, string path)
+        return enumArray.Select(x =>
         {
-            var pathElements = jsonPathInterpreter.GetPathElements(path);
+            return new TranslatedEnumItem($"{x}", $"{x}");
+        });
+    }
 
-            if (pathElements.Length < 1)
-            {
-                return null;
-            }
-            if (!translation.Sections.TryGetValue(pathElements[0], out var section) || section is null)
-            {
-                return null;
-            }
+    private string? TranslateLabel(string? language, UiSchemaLabelInterpretation? labelInterpretation, string? absoluteSchemaPath)
+    {
+        var propertyName = !string.IsNullOrWhiteSpace(absoluteSchemaPath)
+           ? jsonPathInterpreter.GetJsonPropertyNameFromPath(absoluteSchemaPath)
+           : string.Empty;
 
-            if (pathElements.Length == 1)
-            {
-                return section;
-            }
+        var translation = GetTranslationObject(language);
 
-            if (section.NestedSections is null)
-            {
-                return null;
-            }
-
-            return GetNestedSection(section, pathElements, 1);
+        if (translation is null)
+        {
+            return propertyName.ToHumanReadableName();
         }
 
-        private static TranslationSection? GetNestedSection(TranslationSection parent, string[] pathElements, int currentIndex)
+        if (!string.IsNullOrWhiteSpace(labelInterpretation?.I18n)
+             && translation.Sections.TryGetValue(labelInterpretation.I18n, out var i18nSection))
         {
-            if (parent.NestedSections is null || parent.NestedSections.Count == 0)
-            {
-                return null;
-            }
-
-            var currentPathElement = pathElements[currentIndex];
-            if (!parent.NestedSections.TryGetValue(currentPathElement, out var section))
-            {
-                return null;
-            }
-
-            if (currentIndex == (pathElements.Length - 1))
-            {
-                return section;
-            }
-
-            return GetNestedSection(section, pathElements, currentIndex++);
+            return i18nSection.Label;
         }
 
-        private TranslationObject? GetTranslationObject(string? language)
+        if (!string.IsNullOrWhiteSpace(labelInterpretation?.Label)
+            && propertyName != labelInterpretation.Label
+            && translation.Sections.TryGetValue(labelInterpretation.Label, out var simpleLabelSection))
         {
-            if (string.IsNullOrWhiteSpace(language))
-            {
-                return translations.FirstOrDefault();
-            }
-
-            return translations.FirstOrDefault(x => x.Language.Equals(language, StringComparison.OrdinalIgnoreCase));
+            return simpleLabelSection.Label;
         }
 
-        private static IEnumerable<TranslationObject> ConvertToTranslationObjects(TranslationSchema translationSchema)
+        if (string.IsNullOrWhiteSpace(absoluteSchemaPath))
         {
-            return translationSchema.Resources.Select(x => ConvertToTranslationObject(x.Key, x.Value));
+            return null;
         }
 
-        private static TranslationObject ConvertToTranslationObject(string language, TranslationSchemaResource resource)
+        var translationSectionPath = jsonPathInterpreter.FromJsonSchemaPath(absoluteSchemaPath);
+        var translationSection = GetSectionByPath(translation, translationSectionPath);
+        if (translationSection is not null)
         {
-            var json = ObjectJsonConverter.Serialize(resource.Translation);
-            var sections = JsonSerializer.Deserialize<Dictionary<string, TranslationSection>>(json, serializerOptions);
-            var sectionsWithEqualityComparer = new Dictionary<string, TranslationSection>(
-                sections ?? [],
-                StringComparer.OrdinalIgnoreCase
-            );
-            return new TranslationObject(language, sectionsWithEqualityComparer);
+            return translationSection.Label;
         }
 
-        private static JsonSerializerOptions GetSerializerOptions()
+        return propertyName?.ToHumanReadableName();
+    }
+
+    private TranslationSection? GetSectionByPath(TranslationObject translation, string path)
+    {
+        var pathElements = jsonPathInterpreter.GetPathElements(path);
+
+        if (pathElements.Length < 1)
         {
-            var result = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-            result.Converters.Add(new TranslationSectionJsonConverter());
-            return result;
+            return null;
         }
+        if (!translation.Sections.TryGetValue(pathElements[0], out var section) || section is null)
+        {
+            return null;
+        }
+
+        if (pathElements.Length == 1)
+        {
+            return section;
+        }
+
+        if (section.NestedSections is null)
+        {
+            return null;
+        }
+
+        return GetNestedSection(section, pathElements, 1);
+    }
+
+    private static TranslationSection? GetNestedSection(TranslationSection parent, string[] pathElements, int currentIndex)
+    {
+        if (parent.NestedSections is null || parent.NestedSections.Count == 0)
+        {
+            return null;
+        }
+
+        var currentPathElement = pathElements[currentIndex];
+        if (!parent.NestedSections.TryGetValue(currentPathElement, out var section))
+        {
+            return null;
+        }
+
+        if (currentIndex == (pathElements.Length - 1))
+        {
+            return section;
+        }
+
+        return GetNestedSection(section, pathElements, currentIndex++);
+    }
+
+    private TranslationObject? GetTranslationObject(string? language)
+    {
+        if (string.IsNullOrWhiteSpace(language))
+        {
+            return translations.FirstOrDefault();
+        }
+
+        return translations.FirstOrDefault(x => x.Language.Equals(language, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static IEnumerable<TranslationObject> ConvertToTranslationObjects(TranslationSchema translationSchema)
+    {
+        return translationSchema.Resources.Select(x => ConvertToTranslationObject(x.Key, x.Value));
+    }
+
+    private static TranslationObject ConvertToTranslationObject(string language, TranslationSchemaResource resource)
+    {
+        var json = ObjectJsonConverter.Serialize(resource.Translation);
+        var sections = JsonSerializer.Deserialize<Dictionary<string, TranslationSection>>(json, serializerOptions);
+        var sectionsWithEqualityComparer = new Dictionary<string, TranslationSection>(
+            sections ?? [],
+            StringComparer.OrdinalIgnoreCase
+        );
+        return new TranslationObject(language, sectionsWithEqualityComparer);
+    }
+
+    private static JsonSerializerOptions GetSerializerOptions()
+    {
+        var result = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+        return result;
     }
 }

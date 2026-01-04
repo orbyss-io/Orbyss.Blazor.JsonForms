@@ -1,11 +1,10 @@
-﻿namespace Orbyss.Blazor.JsonForms.Context.Notifications
+﻿namespace Orbyss.Blazor.JsonForms.Context.Notifications;
+
+public enum JsonFormNotificationType
 {
-    public enum JsonFormNotificationType
-    {
-        OnLanguageChanged,
-        OnDataValidated,
-        OnDataChanged,
-        OnDisabledChanged,
-        OnReadOnlyChanged
-    }
+    OnLanguageChanged,
+    OnDataValidated,
+    OnDataChanged,
+    OnDisabledChanged,
+    OnReadOnlyChanged
 }

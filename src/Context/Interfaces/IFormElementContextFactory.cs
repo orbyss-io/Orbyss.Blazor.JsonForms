@@ -2,12 +2,11 @@
 using Orbyss.Blazor.JsonForms.Interpretation;
 using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 
-namespace Orbyss.Blazor.JsonForms.Context.Interfaces
-{
-    public interface IFormElementContextFactory
-    {
-        IFormElementContext Create(IUiSchemaElementInterpretation interpretation, string? parentAbsoluteDataJsonPath);
+namespace Orbyss.Blazor.JsonForms.Context.Interfaces;
 
-        FormPageContext[] CreatePages(UiSchemaPageInterpretation[] pageInterpretations);
-    }
+public interface IFormElementContextFactory
+{
+    IFormElementContext Create(IUiSchemaElementInterpretation interpretation, string? parentAbsoluteDataJsonPath);
+
+    FormPageContext[] CreatePages(UiSchemaPageInterpretation[] pageInterpretations);
 }

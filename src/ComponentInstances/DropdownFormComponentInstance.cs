@@ -1,16 +1,13 @@
-﻿using Newtonsoft.Json.Linq;
+﻿namespace Orbyss.Blazor.JsonForms.ComponentInstances;
 
-namespace Orbyss.Blazor.JsonForms.ComponentInstances
+public class DropdownFormComponentInstance(Type componentType) : DropdownFormComponentInstanceBase
 {
-    public class DropdownFormComponentInstance(Type componentType) : DropdownFormComponentInstanceBase
-    {
-        public override Type ComponentType => componentType;       
-    }
+    public override Type ComponentType => componentType;
+}
 
-    public class DropdownFormComponentInstance<TComponent> : DropdownFormComponentInstance
+public class DropdownFormComponentInstance<TComponent> : DropdownFormComponentInstance
+{
+    public DropdownFormComponentInstance() : base(typeof(TComponent))
     {
-        public DropdownFormComponentInstance() : base(typeof(TComponent))
-        {
-        }
     }
 }

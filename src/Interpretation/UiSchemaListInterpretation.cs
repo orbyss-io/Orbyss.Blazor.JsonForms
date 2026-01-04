@@ -1,51 +1,50 @@
 ﻿using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 using Orbyss.Blazor.JsonForms.UiSchema;
 
-namespace Orbyss.Blazor.JsonForms.Interpretation
+namespace Orbyss.Blazor.JsonForms.Interpretation;
+
+public class UiSchemaListInterpretation(
+    UiSchemaLabelInterpretation? labelInterpretation,
+    bool readOnly,
+    bool disabled,
+    bool hidden,
+    string relativeSchemaJsonPath,
+    string absoluteSchemaJsonPath,
+    string relativeItemsSchemaJsonPath,
+    string absoluteItemsSchemaJsonPath,
+    string listJsonPropertyName,
+    string? absoluteParentObjectSchemaPath,
+    FormUiSchemaElement element,
+    UiSchemaRuleInterpretation? rule)
+
+    : UiSchemaControlInterpretationBase(labelInterpretation, readOnly, disabled, hidden, relativeSchemaJsonPath, absoluteSchemaJsonPath, listJsonPropertyName, absoluteParentObjectSchemaPath, element, rule)
 {
-    public class UiSchemaListInterpretation(
-        UiSchemaLabelInterpretation? labelInterpretation,
-        bool readOnly,
-        bool disabled,
-        bool hidden,
-        string relativeSchemaJsonPath,
-        string absoluteSchemaJsonPath,
-        string relativeItemsSchemaJsonPath,
-        string absoluteItemsSchemaJsonPath,
-        string listJsonPropertyName,
-        string? absoluteParentObjectSchemaPath,
-        FormUiSchemaElement element,
-        UiSchemaRuleInterpretation? rule)
+    private IUiSchemaElementInterpretation? listDetails;
 
-        : UiSchemaControlInterpretationBase(labelInterpretation, readOnly, disabled, hidden, relativeSchemaJsonPath, absoluteSchemaJsonPath, listJsonPropertyName, absoluteParentObjectSchemaPath, element, rule)
+    public override UiSchemaElementInterpretationType ElementType => UiSchemaElementInterpretationType.List;
+
+    public string AbsoluteItemsSchemaJsonPath { get; } = absoluteItemsSchemaJsonPath;
+
+    public string ListJsonPropertyName { get; } = listJsonPropertyName;
+
+    public string RelativeItemsSchemaJsonPath { get; } = relativeItemsSchemaJsonPath;
+
+    public IUiSchemaElementInterpretation GetListDetail()
     {
-        private IUiSchemaElementInterpretation? listDetails;
-
-        public override UiSchemaElementInterpretationType ElementType => UiSchemaElementInterpretationType.List;
-
-        public string AbsoluteItemsSchemaJsonPath { get; } = absoluteItemsSchemaJsonPath;
-
-        public string ListJsonPropertyName { get; } = listJsonPropertyName;
-
-        public string RelativeItemsSchemaJsonPath { get; } = relativeItemsSchemaJsonPath;
-
-        public IUiSchemaElementInterpretation GetListDetail()
+        if (listDetails is null)
         {
-            if (listDetails is null)
-            {
-                throw new ArgumentException("List details is not set for this list");
-            }
-            return listDetails;
+            throw new ArgumentException("List details is not set for this list");
+        }
+        return listDetails;
+    }
+
+    internal void SetListDetail(IUiSchemaElementInterpretation listDetails)
+    {
+        if (this.listDetails is not null)
+        {
+            throw new InvalidOperationException("List details are already set.");
         }
 
-        internal void SetListDetail(IUiSchemaElementInterpretation listDetails)
-        {
-            if (this.listDetails is not null)
-            {
-                throw new InvalidOperationException("List details are already set.");
-            }
-
-            this.listDetails = listDetails;
-        }
+        this.listDetails = listDetails;
     }
 }

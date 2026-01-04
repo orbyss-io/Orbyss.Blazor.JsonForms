@@ -1,16 +1,15 @@
-﻿namespace Orbyss.Blazor.JsonForms.Interpretation
+﻿namespace Orbyss.Blazor.JsonForms.Interpretation;
+
+public enum ControlType
 {
-    public enum ControlType
-    {
-        Enum,
-        EnumList,
-        DateTime,
-        DateTimeUtcTicks,
-        DateOnly,
-        DateOnlyUtcTicks,
-        Number,
-        Integer,
-        String,
-        Boolean
-    }
+    Enum,
+    EnumList,
+    DateTime,
+    DateTimeUtcTicks,
+    DateOnly,
+    DateOnlyUtcTicks,
+    Number,
+    Integer,
+    String,
+    Boolean
 }

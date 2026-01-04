@@ -1,44 +1,43 @@
 ﻿using Newtonsoft.Json.Linq;
 using Orbyss.Components.Json.Models;
 
-namespace Orbyss.Blazor.JsonForms.ComponentInstances
+namespace Orbyss.Blazor.JsonForms.ComponentInstances;
+
+public abstract class DropdownFormComponentInstanceBase : InputFormComponentInstanceBase
 {
-    public abstract class DropdownFormComponentInstanceBase : InputFormComponentInstanceBase
+    public bool Clearable { get; set; }
+
+    public bool Searchable { get; set; }
+
+    public bool MultiSelect { get; internal set; }
+
+    public IEnumerable<TranslatedEnumItem> Items { get; internal set; } = [];
+
+    protected override sealed object? ConvertValue(JToken? value)
     {
-        public bool Clearable { get; set; }
-
-        public bool Searchable { get; set; }
-
-        public bool MultiSelect { get; internal set; }
-
-        public IEnumerable<TranslatedEnumItem> Items { get; internal set; } = [];
-
-        protected override sealed object? ConvertValue(JToken? value)
+        if (MultiSelect)
         {
-            if (MultiSelect)
-            {
-                return value?.ToObject<IEnumerable<string>>();
-            }
-
-            return value?.ToString();
+            return value?.ToObject<IEnumerable<string>>();
         }
 
-        protected override sealed IDictionary<string, object?> GetFormInputParameters()
-        {
-            var result = GetDropdownParameters();
+        return value?.ToString();
+    }
 
-            AddIfNotContains(result, nameof(Clearable), Clearable);
-            AddIfNotContains(result, nameof(Searchable), Searchable);
+    protected override sealed IDictionary<string, object?> GetFormInputParameters()
+    {
+        var result = GetDropdownParameters();
 
-            result[nameof(MultiSelect)] = MultiSelect;
-            result[nameof(Items)] = Items;
+        AddIfNotContains(result, nameof(Clearable), Clearable);
+        AddIfNotContains(result, nameof(Searchable), Searchable);
 
-            return result;
-        }
+        result[nameof(MultiSelect)] = MultiSelect;
+        result[nameof(Items)] = Items;
 
-        protected virtual IDictionary<string, object?> GetDropdownParameters()
-        {
-            return new Dictionary<string, object?>();
-        }
+        return result;
+    }
+
+    protected virtual IDictionary<string, object?> GetDropdownParameters()
+    {
+        return new Dictionary<string, object?>();
     }
 }

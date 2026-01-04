@@ -1,7 +1,6 @@
-﻿namespace Orbyss.Blazor.JsonForms.Constants
+﻿namespace Orbyss.Blazor.JsonForms.Constants;
+
+public static class ComponentInstanceParameterKeys
 {
-    public static class ComponentInstanceParameterKeys
-    {
-        public const string OnValueChanged = "OnValueChanged";
-    }
+    public const string OnValueChanged = "OnValueChanged";
 }

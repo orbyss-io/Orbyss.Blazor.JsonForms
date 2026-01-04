@@ -1,14 +1,13 @@
-﻿namespace Orbyss.Blazor.JsonForms.ComponentInstances
-{
-    public class NavigationFormComponentInstance(Type componentType) : NavigationFormComponentInstanceBase
-    {
-        public override sealed Type ComponentType => componentType;
-    }
+﻿namespace Orbyss.Blazor.JsonForms.ComponentInstances;
 
-    public class NavigationFormComponentInstance<TComponent> : NavigationFormComponentInstance
+public class NavigationFormComponentInstance(Type componentType) : NavigationFormComponentInstanceBase
+{
+    public override sealed Type ComponentType => componentType;
+}
+
+public class NavigationFormComponentInstance<TComponent> : NavigationFormComponentInstance
+{
+    public NavigationFormComponentInstance() : base(typeof(TComponent))
     {
-        public NavigationFormComponentInstance() : base(typeof(TComponent))
-        {
-        }
     }
 }

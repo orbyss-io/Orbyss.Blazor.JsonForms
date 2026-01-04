@@ -1,9 +1,8 @@
-﻿namespace Orbyss.Blazor.JsonForms.Interpretation.Exceptions
+﻿namespace Orbyss.Blazor.JsonForms.Interpretation.Exceptions;
+
+public sealed class InvalidSchemaTypeConfigurationException : Exception
 {
-    public sealed class InvalidSchemaTypeConfigurationException : Exception
+    public InvalidSchemaTypeConfigurationException(string? message = null) : base(message)
     {
-        public InvalidSchemaTypeConfigurationException(string? message = null) : base(message)
-        {
-        }
     }
 }

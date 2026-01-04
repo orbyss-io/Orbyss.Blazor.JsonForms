@@ -1,112 +1,111 @@
 ﻿using Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
 
-namespace Orbyss.Blazor.JsonForms.Interpretation
+namespace Orbyss.Blazor.JsonForms.Interpretation;
+
+public sealed class JsonPathInterpreter : IJsonPathInterpreter
 {
-    public sealed class JsonPathInterpreter : IJsonPathInterpreter
+    public static readonly IJsonPathInterpreter Default = new JsonPathInterpreter();
+
+    public string JoinJsonPaths(string left, string right)
     {
-        public static readonly IJsonPathInterpreter Default = new JsonPathInterpreter();
+        return string.Concat(
+            left,
+            right.Replace("$", "")
+        );
+    }
 
-        public string JoinJsonPaths(string left, string right)
+    public string FromElementScope(string? scope)
+    {
+        if (string.IsNullOrWhiteSpace(scope))
         {
-            return string.Concat(
-                left,
-                right.Replace("$", "")
-            );
+            throw new ArgumentException("Scope is either null or empty");
         }
 
-        public string FromElementScope(string? scope)
+        return scope
+            .Replace("#/", "$.")
+            .Replace("/", ".");
+    }
+
+    public string FromJsonSchemaPath(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
         {
-            if (string.IsNullOrWhiteSpace(scope))
+            throw new ArgumentException("Path is either null or empty");
+        }
+
+        return path
+            .Replace(".items", "")
+            .Replace(".properties", "");
+    }
+
+    public string AddIndexToPath(string path, int index)
+    {
+        return $"{path}[{index}]";
+    }
+
+    public string GetParentPathFromSchemaPath(string schemaPath)
+    {
+        if (schemaPath.Contains(".properties"))
+        {
+            var items = schemaPath.Split('.');
+            var index = items.Length - 1;
+            while (index > -1)
             {
-                throw new ArgumentException("Scope is either null or empty");
-            }
+                var item = items[index];
 
-            return scope
-                .Replace("#/", "$.")
-                .Replace("/", ".");
-        }
-
-        public string FromJsonSchemaPath(string path)
-        {
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                throw new ArgumentException("Path is either null or empty");
-            }
-
-            return path
-                .Replace(".items", "")
-                .Replace(".properties", "");
-        }
-
-        public string AddIndexToPath(string path, int index)
-        {
-            return $"{path}[{index}]";
-        }
-
-        public string GetParentPathFromSchemaPath(string schemaPath)
-        {
-            if (schemaPath.Contains(".properties"))
-            {
-                var items = schemaPath.Split('.');
-                var index = items.Length - 1;
-                while (index > -1)
+                if (item == "properties")
                 {
-                    var item = items[index];
-
-                    if (item == "properties")
-                    {
-                        break;
-                    }
-
-                    index--;
+                    break;
                 }
 
-                if (index <= 1)
-                {
-                    return "$";
-                }
-
-                var result = Enumerable
-                    .Range(0, index)
-                    .Select(i => items[i])
-                    .ToArray();
-
-                return string.Join('.', result);
+                index--;
             }
 
-            return "$";
-        }
-
-        public string GetParentPathFromDataPath(string dataPath)
-        {
-            var items = dataPath.Split('.');
-            if (items.Length > 2)
+            if (index <= 1)
             {
-                var result = Enumerable
-                    .Range(0, items.Length - 1)
-                    .Select(i => items[i])
-                    .ToArray();
-
-                return string.Join('.', result);
+                return "$";
             }
 
-            return "$";
+            var result = Enumerable
+                .Range(0, index)
+                .Select(i => items[i])
+                .ToArray();
+
+            return string.Join('.', result);
         }
 
-        public string GetJsonPropertyNameFromPath(string path)
+        return "$";
+    }
+
+    public string GetParentPathFromDataPath(string dataPath)
+    {
+        var items = dataPath.Split('.');
+        if (items.Length > 2)
         {
-            return path.Split('.').LastOrDefault() ?? throw new ArgumentException("JSON path does not contain any path elements");
+            var result = Enumerable
+                .Range(0, items.Length - 1)
+                .Select(i => items[i])
+                .ToArray();
+
+            return string.Join('.', result);
         }
 
-        public string[] GetPathElements(string path)
-        {
-            var result = path
-                .Split('.', StringSplitOptions.RemoveEmptyEntries)
-                .ToList();
+        return "$";
+    }
 
-            result.RemoveAll(x => x == "$");
+    public string GetJsonPropertyNameFromPath(string path)
+    {
+        return path.Split('.').LastOrDefault() ?? throw new ArgumentException("JSON path does not contain any path elements");
+    }
 
-            return [.. result];
-        }
+    public string[] GetPathElements(string path)
+    {
+        var result = path
+            .Split('.', StringSplitOptions.RemoveEmptyEntries)
+            .ToList();
+
+        result.RemoveAll(x => x == "$");
+
+        return [.. result];
     }
 }

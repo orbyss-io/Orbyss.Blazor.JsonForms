@@ -1,9 +1,8 @@
-﻿namespace Orbyss.Blazor.JsonForms.Interpretation.Exceptions
+﻿namespace Orbyss.Blazor.JsonForms.Interpretation.Exceptions;
+
+public sealed class SchemaTypeNotSupportedException : Exception
 {
-    public sealed class SchemaTypeNotSupportedException : Exception
+    public SchemaTypeNotSupportedException(string? message = null) : base(message)
     {
-        public SchemaTypeNotSupportedException(string? message = null) : base(message)
-        {
-        }
     }
 }

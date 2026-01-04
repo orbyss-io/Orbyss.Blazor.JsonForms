@@ -3,31 +3,30 @@ using Orbyss.Blazor.JsonForms.ComponentInstances.Interfaces;
 using Orbyss.Blazor.JsonForms.Context.Interfaces;
 using Orbyss.Blazor.JsonForms.Context.Models;
 
-namespace Orbyss.Blazor.JsonForms
+namespace Orbyss.Blazor.JsonForms;
+
+public interface IFormComponentInstanceProvider
 {
-    public interface IFormComponentInstanceProvider
-    {
-        InputFormComponentInstanceBase GetInputField(IJsonFormContext context, FormControlContext control);
+    InputFormComponentInstanceBase GetInputField(IJsonFormContext context, FormControlContext control);
 
-        IFormComponentInstance GetGridRow(IFormElementContext? row);
+    IFormComponentInstance GetGridRow(IFormElementContext? row);
 
-        IFormComponentInstance GetGridColumn(IFormElementContext? column);
+    IFormComponentInstance GetGridColumn(IFormElementContext? column);
 
-        IFormComponentInstance GetGrid(IJsonFormContext? form, FormPageContext? page);
+    IFormComponentInstance GetGrid(IJsonFormContext? form, FormPageContext? page);
 
-        ButtonFormComponentInstanceBase GetButton(FormButtonType type, IJsonFormContext? form);
+    ButtonFormComponentInstanceBase GetButton(FormButtonType type, IJsonFormContext? form);
 
-        NavigationFormComponentInstanceBase GetNavigation(IJsonFormContext formContext);
+    NavigationFormComponentInstanceBase GetNavigation(IJsonFormContext formContext);
 
-        ListFormComponentInstanceBase GetList(FormListContext? list = null);
+    ListFormComponentInstanceBase GetList(FormListContext? list = null);
 
-        ListItemFormComponentInstance GetListItem(IFormElementContext? listItem = null);
-    }
+    ListItemFormComponentInstance GetListItem(IFormElementContext? listItem = null);
+}
 
-    public enum FormButtonType
-    {
-        Submit,
-        Next,
-        Previous
-    }
+public enum FormButtonType
+{
+    Submit,
+    Next,
+    Previous
 }

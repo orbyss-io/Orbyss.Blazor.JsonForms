@@ -1,47 +1,46 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Orbyss.Blazor.JsonForms.ComponentInstances
+namespace Orbyss.Blazor.JsonForms.ComponentInstances;
+
+public abstract class InputFormComponentInstanceBase : FormComponentInstanceBase
 {
-    public abstract class InputFormComponentInstanceBase : FormComponentInstanceBase
+    private JToken? value;
+
+    public string? Label { get; internal set; }
+
+    public bool Disabled { get; internal set; }
+
+    public bool ReadOnly { get; internal set; }
+
+    public string? ErrorHelperText { get; internal set; }
+
+    public string? HelperText { get; set; }
+
+    public object? Value => ConvertValue(value);
+
+    internal void SetInputValue(JToken? value)
     {
-        private JToken? value;
+        this.value = value;
+    }
 
-        public string? Label { get; internal set; }
+    protected abstract object? ConvertValue(JToken? value);
 
-        public bool Disabled { get; internal set; }
+    protected virtual IDictionary<string, object?> GetFormInputParameters()
+    {
+        return new Dictionary<string, object?>();
+    }
 
-        public bool ReadOnly { get; internal set; }
+    protected override sealed IDictionary<string, object?> GetParametersCore()
+    {
+        var result = GetFormInputParameters();
+        AddIfNotContains(result, nameof(HelperText), HelperText);
 
-        public string? ErrorHelperText { get; internal set; }
+        result[nameof(Label)] = Label;
+        result[nameof(Disabled)] = Disabled;
+        result[nameof(ReadOnly)] = ReadOnly;
+        result[nameof(ErrorHelperText)] = ErrorHelperText;
+        result[nameof(Value)] = Value;
 
-        public string? HelperText { get; set; }
-
-        public object? Value => ConvertValue(value);
-
-        internal void SetInputValue(JToken? value)
-        {
-            this.value = value;
-        }
-
-        protected abstract object? ConvertValue(JToken? value);
-
-        protected virtual IDictionary<string, object?> GetFormInputParameters()
-        {
-            return new Dictionary<string, object?>();
-        }
-
-        protected override sealed IDictionary<string, object?> GetParametersCore()
-        {
-            var result = GetFormInputParameters();
-            AddIfNotContains(result, nameof(HelperText), HelperText);
-
-            result[nameof(Label)] = Label;
-            result[nameof(Disabled)] = Disabled;
-            result[nameof(ReadOnly)] = ReadOnly;
-            result[nameof(ErrorHelperText)] = ErrorHelperText;
-            result[nameof(Value)] = Value;
-
-            return result;
-        }
+        return result;
     }
 }

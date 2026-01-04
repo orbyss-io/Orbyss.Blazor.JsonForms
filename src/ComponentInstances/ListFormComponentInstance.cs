@@ -1,14 +1,13 @@
-﻿namespace Orbyss.Blazor.JsonForms.ComponentInstances
-{
-    public class ListFormComponentInstance(Type componentType) : ListFormComponentInstanceBase
-    {
-        public override Type ComponentType => componentType;
-    }
+﻿namespace Orbyss.Blazor.JsonForms.ComponentInstances;
 
-    public class ListFormComponentInstance<TComponent> : ListFormComponentInstance
+public class ListFormComponentInstance(Type componentType) : ListFormComponentInstanceBase
+{
+    public override Type ComponentType => componentType;
+}
+
+public class ListFormComponentInstance<TComponent> : ListFormComponentInstance
+{
+    public ListFormComponentInstance() : base(typeof(TComponent))
     {
-        public ListFormComponentInstance() : base(typeof(TComponent))
-        {
-        }
     }
 }

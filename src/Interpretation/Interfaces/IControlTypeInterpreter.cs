@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json.Schema;
 
-namespace Orbyss.Blazor.JsonForms.Interpretation.Interfaces
+namespace Orbyss.Blazor.JsonForms.Interpretation.Interfaces;
+
+public interface IControlTypeInterpreter
 {
-    public interface IControlTypeInterpreter
-    {
-        ControlType Interpret(JSchema jsonSchema, string absoluteControlJsonSchemaPath, string? absoluteControlParentSchemaJsonPath);
-    }
+    ControlType Interpret(JSchema jsonSchema, string absoluteControlJsonSchemaPath, string? absoluteControlParentSchemaJsonPath);
 }

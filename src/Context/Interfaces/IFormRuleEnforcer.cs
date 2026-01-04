@@ -1,11 +1,10 @@
 ﻿using Orbyss.Blazor.JsonForms.Context.Models;
 
-namespace Orbyss.Blazor.JsonForms.Context.Interfaces
-{
-    public interface IFormRuleEnforcer
-    {
-        void EnforceRule(IJsonFormDataContext dataContext, IFormElementContext context, IFormElementContext[] rootContexts);
+namespace Orbyss.Blazor.JsonForms.Context.Interfaces;
 
-        void EnforceRulesForPages(IJsonFormDataContext dataContext, FormPageContext[] pages, IFormElementContext[] rootContexts);
-    }
+public interface IFormRuleEnforcer
+{
+    void EnforceRule(IJsonFormDataContext dataContext, IFormElementContext context, IFormElementContext[] rootContexts);
+
+    void EnforceRulesForPages(IJsonFormDataContext dataContext, FormPageContext[] pages, IFormElementContext[] rootContexts);
 }
